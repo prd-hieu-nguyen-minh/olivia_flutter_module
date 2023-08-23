@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
@@ -24,6 +26,7 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
 
   @override
   Widget build(BuildContext context) {
+    // abc();
     return Padding(
       padding: EdgeInsets.all(globalSpace),
       child: Row(
@@ -40,6 +43,21 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void abc() async {
+    var platform = const MethodChannel("abc");
+    platform.setMethodCallHandler(
+      (call) async {
+        if (call.method == "name") {
+          var headers = call.arguments;
+          Fluttertoast.showToast(
+            msg: headers.toString(),
+            toastLength: Toast.LENGTH_LONG,
+          );
+        }
+      },
     );
   }
 
@@ -69,7 +87,7 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
       children: [
         const Expanded(
           child: Text(
-            "All Candidates",
+            "All Candidatesz",
           ),
         ),
         Container(
