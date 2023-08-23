@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-class TalentCommunityPage extends StatefulWidget {
-  const TalentCommunityPage({super.key});
+class CandidateManagementPage extends StatefulWidget {
+  const CandidateManagementPage({super.key});
 
   @override
-  State<TalentCommunityPage> createState() => _TalentCommunityPageState();
+  State<CandidateManagementPage> createState() =>
+      _CandidateManagementPageState();
 }
 
-class _TalentCommunityPageState extends State<TalentCommunityPage> {
+class _CandidateManagementPageState extends State<CandidateManagementPage> {
   final double globalSpace = 14;
 
   @override
