@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
+import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
+import 'package:olivia_flutter_module/utils/app_utils.dart';
 
 class CandidateManagementPage extends StatefulWidget {
   const CandidateManagementPage({super.key});
 
   @override
-  State<CandidateManagementPage> createState() =>
-      _CandidateManagementPageState();
+  State<CandidateManagementPage> createState() => _CandidateManagementPageState();
 }
 
 class _CandidateManagementPageState extends State<CandidateManagementPage> {
   final double globalSpace = 14;
+
+  MenuSection? menuSection = null;
+
+  @override
+  void initState() {
+    menuSection = AppUtils.parseMenuSectionFromJson(AppHelpers.menuJsonStr);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,49 +30,13 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
         children: [
           SizedBox(
             width: 250,
-            child: _buildBoard(),
+            child: menuSection != null
+                ? BoardWidget(menuSection: menuSection!)
+                : const SizedBox.shrink(),
           ),
           SizedBox(width: globalSpace),
           Expanded(
             child: _buildContent(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBoard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black26,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            height: 60,
-            child: Row(
-              children: const [
-                Expanded(
-                  child: Text(
-                    "Candidate Management",
-                  ),
-                ),
-                Icon(
-                  Icons.filter_list,
-                  size: 24,
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            color: Colors.black12,
-            thickness: 3,
           ),
         ],
       ),
