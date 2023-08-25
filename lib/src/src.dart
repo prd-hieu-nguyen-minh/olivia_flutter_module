@@ -9,4 +9,9 @@ class SampleCallNativeFlutter {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
+
+  static Future<Map<dynamic, dynamic>?> get headers async {
+    final headers = await _channel.invokeMethod('headers');
+    return headers;
+  }
 }

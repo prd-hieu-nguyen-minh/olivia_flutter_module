@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
-import 'package:olivia_flutter_module/utils/app_utils.dart';
 
 import '../../src/src.dart';
 
@@ -18,11 +15,8 @@ class CandidateManagementPage extends StatefulWidget {
 class _CandidateManagementPageState extends State<CandidateManagementPage> {
   final double globalSpace = 14;
 
-  MenuSection? menuSection = null;
-
   @override
   void initState() {
-    menuSection = AppUtils.parseMenuSectionFromJson(AppHelpers.menuJsonStr);
     super.initState();
   }
 
@@ -33,11 +27,9 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
       padding: EdgeInsets.all(globalSpace),
       child: Row(
         children: [
-          SizedBox(
+          const SizedBox(
             width: 250,
-            child: menuSection != null
-                ? BoardWidget(menuSection: menuSection!)
-                : const SizedBox.shrink(),
+            child: BoardWidget(),
           ),
           SizedBox(width: globalSpace),
           Expanded(

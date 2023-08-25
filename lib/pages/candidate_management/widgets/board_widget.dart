@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/pages/widgets/menu_section_widget.dart';
+import 'package:olivia_flutter_module/services/api_services.dart';
 
 class BoardWidget extends StatefulWidget {
-  final MenuSection menuSection;
-
-  const BoardWidget({
-    Key? key,
-    required this.menuSection,
-  }) : super(key: key);
+  const BoardWidget({Key? key}) : super(key: key);
 
   @override
   State<BoardWidget> createState() => _BoardWidgetState();
@@ -17,15 +13,18 @@ class BoardWidget extends StatefulWidget {
 
 class _BoardWidgetState extends State<BoardWidget> {
   late List<MenuSection> menuData;
+  late ApiServices apiServices;
 
   @override
   void initState() {
-    menuData = AppHelpers.getMenuData(widget.menuSection);
+    menuData = [];
+    apiServices = ApiServices();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    getCandidateInbox();
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -79,5 +78,13 @@ class _BoardWidgetState extends State<BoardWidget> {
         menuSection: menuData[index],
       ),
     );
+  }
+
+  void getCandidateInbox() async {
+    var menuSection = await apiServices.getCandidateInbox();
+    var menuData = AppHelpers.getMenuData(menuSection);
+    setState(() {
+      this.menuData = menuData;
+    });
   }
 }

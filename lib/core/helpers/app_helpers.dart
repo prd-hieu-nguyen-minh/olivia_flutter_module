@@ -119,8 +119,11 @@ class AppHelpers {
 }
       ''';
 
-  static List<MenuSection> getMenuData(MenuSection menuSection) {
+  static List<MenuSection> getMenuData(MenuSection? menuSection) {
     List<MenuSection> result = [];
+    if (menuSection == null) {
+      return result;
+    }
     result.add(menuSection);
     for (var child in menuSection.children) {
       child.parent = menuSection;
