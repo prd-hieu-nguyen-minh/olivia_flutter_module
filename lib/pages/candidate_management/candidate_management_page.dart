@@ -6,6 +6,8 @@ import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
 import 'package:olivia_flutter_module/utils/app_utils.dart';
 
+import '../../src/src.dart';
+
 class CandidateManagementPage extends StatefulWidget {
   const CandidateManagementPage({super.key});
 
@@ -85,9 +87,12 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
   Widget _buildContentHeader() {
     return Row(
       children: [
-        const Expanded(
-          child: Text(
-            "All Candidatesz",
+        Expanded(
+          child: FutureBuilder(
+            future: SampleCallNativeFlutter.platformVersion,
+            builder: (context, snapshot) {
+              return Text(snapshot.data?.toString() ?? "All Candidatesz");
+            },
           ),
         ),
         Container(

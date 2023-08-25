@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/main.dart';
 
 class UnknownRoutePage extends StatelessWidget {
-  const UnknownRoutePage({Key? key}) : super(key: key);
+  final String route;
+
+  const UnknownRoutePage({
+    Key? key,
+    required this.route,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Unknown route"),
+    return Center(
+      child: Column(
+        children: [
+          Text("Unknown route: $route"),
+          const SizedBox(height: 16),
+          FutureBuilder(
+            future: SampleCallNativeFlutter.platformVersion,
+            builder: (context, snapshot) => Text(snapshot.data?.toString() ?? ""),
+          ),
+        ],
+      ),
     );
   }
 }
