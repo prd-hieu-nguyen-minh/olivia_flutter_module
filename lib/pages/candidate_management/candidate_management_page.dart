@@ -27,7 +27,6 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
 
   @override
   Widget build(BuildContext context) {
-    // abc();
     return Padding(
       padding: EdgeInsets.all(globalSpace),
       child: Row(
@@ -39,10 +38,11 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
           SizedBox(width: globalSpace),
           Expanded(
             child: FutureBuilder<CandidateResponse?>(
-                future: apiService.getCandidates(),
-                builder: (context, snapshot) {
-                  return _buildContent(snapshot.data);
-                }),
+              future: apiService.getCandidates(),
+              builder: (context, snapshot) {
+                return _buildContent(snapshot.data);
+              },
+            ),
           ),
         ],
       ),

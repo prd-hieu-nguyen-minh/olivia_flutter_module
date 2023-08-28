@@ -30,6 +30,7 @@ dependencies:
   syncfusion_flutter_calendar: ^20.4.52
   http: ^0.13.4
   fluttertoast: ^8.2.2
+  dio: ^5.3.2
 
 dev_dependencies:
   flutter_test:
