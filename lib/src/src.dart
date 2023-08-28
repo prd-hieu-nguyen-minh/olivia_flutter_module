@@ -14,4 +14,9 @@ class SampleCallNativeFlutter {
     final headers = await _channel.invokeMethod('headers');
     return headers;
   }
+
+  static Future<String?> get companyId async {
+    final companyId = await _channel.invokeMethod('companyId');
+    return companyId?.toString();
+  }
 }

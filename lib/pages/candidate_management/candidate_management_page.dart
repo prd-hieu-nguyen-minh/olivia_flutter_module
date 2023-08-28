@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:olivia_flutter_module/core/models/CandidateResponse.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
+import 'package:olivia_flutter_module/pages/candidate_management/widgets/toolbar_widget.dart';
+import 'package:olivia_flutter_module/services/api_services.dart';
 
+import '../../core/data/app_colors.dart';
 import '../../src/src.dart';
 
 class CandidateManagementPage extends StatefulWidget {
@@ -14,6 +18,7 @@ class CandidateManagementPage extends StatefulWidget {
 
 class _CandidateManagementPageState extends State<CandidateManagementPage> {
   final double globalSpace = 14;
+  final apiService = ApiServices();
 
   @override
   void initState() {
@@ -33,7 +38,11 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
           ),
           SizedBox(width: globalSpace),
           Expanded(
-            child: _buildContent(),
+            child: FutureBuilder<CandidateResponse?>(
+                future: apiService.getCandidates(),
+                builder: (context, snapshot) {
+                  return _buildContent(snapshot.data);
+                }),
           ),
         ],
       ),
@@ -55,7 +64,7 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(CandidateResponse? candidateResponse) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -70,7 +79,9 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
         children: [
           _buildContentHeader(),
           const SizedBox(height: 8),
-          _buildToolBar(),
+          ToolBarWidget(
+            total: candidateResponse?.total ?? 0,
+          ),
         ],
       ),
     );
@@ -90,7 +101,7 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.blueAccent,
+            color: AppColors.colorPrimary,
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Text(
@@ -103,90 +114,6 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildToolBar() {
-    return Row(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black12,
-                    width: 1,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              const Text(
-                "222 Candidates",
-                style: TextStyle(
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
-        ),
-        _buildSearchBar(),
-        const SizedBox(width: 8),
-        Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black12,
-              width: 1,
-            ),
-          ),
-          child: const Icon(
-            Icons.refresh,
-            size: 16,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      height: 40,
-      width: 200,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black12,
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: const [
-          Icon(
-            Icons.search,
-            color: Colors.black26,
-            size: 20,
-          ),
-          SizedBox(width: 4),
-          Expanded(
-            child: TextField(
-              maxLines: 1,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: "Search",
-                hintStyle: TextStyle(
-                  color: Colors.black38,
-                  fontSize: 14,
-                ),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
