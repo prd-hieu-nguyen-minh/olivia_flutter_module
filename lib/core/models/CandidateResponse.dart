@@ -13,7 +13,7 @@ class CandidateResponse {
   });
 
   factory CandidateResponse.fromJson(Map? json) {
-    var candidateJson = json?["candidate?"] as List? ?? [];
+    var candidateJson = json?["candidates"] as List? ?? [];
     var columnJson = json?["columns"] as List? ?? [];
     return CandidateResponse(
       candidates: candidateJson.map((e) => Candidate.fromJson(e)).toList(),

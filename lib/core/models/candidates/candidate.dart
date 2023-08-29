@@ -40,7 +40,7 @@ class Candidate {
 
   Map<String, String> get map => {
         "name": name,
-        "phone_number": phoneNumber,
+        "phone_number": phoneNumber.isNotEmpty ? phoneNumber : "_",
         "email": email,
         "candidate_job_applied": candidateJobApplied,
         "location": location,
