@@ -15,6 +15,23 @@ class CandidateResponseWidget extends StatefulWidget {
 }
 
 class _CandidateResponseWidgetState extends State<CandidateResponseWidget> {
+  late ScrollController horizontalScrollBar;
+  late ScrollController verticalScrollBar;
+
+  @override
+  void initState() {
+    horizontalScrollBar = ScrollController();
+    verticalScrollBar = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    horizontalScrollBar.dispose();
+    verticalScrollBar.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,31 +47,65 @@ class _CandidateResponseWidgetState extends State<CandidateResponseWidget> {
   }
 
   Widget _buildContent() {
-    return Table(
-      children: [
-        TableRow(
-          children: widget.response?.columns
-                  .map((column) => Text(
-                        column.text,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
+    var columns = widget.response?.columns ?? [];
+    if (columns.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Scrollbar(
+      controller: horizontalScrollBar,
+      child: SingleChildScrollView(
+        controller: horizontalScrollBar,
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          children: [
+            Row(
+              children: columns
+                  .map((e) => _buildItem(
+                        e.text,
+                        isTitle: true,
                       ))
-                  .toList() ??
-              [],
+                  .toList(),
+            ),
+            Flexible(
+              child: Scrollbar(
+                controller: verticalScrollBar,
+                child: SingleChildScrollView(
+                  controller: verticalScrollBar,
+                  child: Column(
+                    children: (widget.response?.candidates ?? []).map((candidate) {
+                      var candidateMap = candidate.map;
+                      return Row(
+                        children: (widget.response?.columns ?? [])
+                            .map((column) => _buildItem(candidateMap[column.id] ?? ""))
+                            .toList(),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-        ...(widget.response?.candidates ?? []).map((candidate) {
-          var candidateMap = candidate.map;
-          return TableRow(
-            children: (widget.response?.columns ?? [])
-                .map((column) => Text(
-                      candidateMap[column.id] ?? "",
-                    ))
-                .toList(),
-          );
-        }).toList(),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildItem(String text, {isTitle = false}) {
+    return SizedBox(
+      width: 180,
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: isTitle ? FontWeight.w700 : FontWeight.w400,
+            fontSize: 16,
+          ),
+        ),
+      ),
     );
   }
 }
