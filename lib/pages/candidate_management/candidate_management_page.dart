@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/core/models/CandidateResponse.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/candidate_response_widget.dart';
-import 'package:olivia_flutter_module/pages/candidate_management/widgets/toolbar_widget.dart';
 import 'package:olivia_flutter_module/services/api_services.dart';
 
 import '../../core/data/app_colors.dart';

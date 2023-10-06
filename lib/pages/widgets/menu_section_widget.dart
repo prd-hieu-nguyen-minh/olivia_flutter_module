@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/enums/menu_type.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/main.dart';
 import 'package:olivia_flutter_module/utils/app_utils.dart';
 
 class MenuSectionWidget extends StatelessWidget {
@@ -28,10 +31,9 @@ class MenuSectionWidget extends StatelessWidget {
       return _buildAllCandidate(menuSection.name);
     }
     return _buildMenuItemWidget(
-      name: menuSection.name,
+      menuSection: menuSection,
       iconData: menuType.icon,
       isMore: menuSection.isMore,
-      isChildMore: menuSection.parent?.isMore ?? false,
     );
   }
 
@@ -47,11 +49,11 @@ class MenuSectionWidget extends StatelessWidget {
   }
 
   Widget _buildMenuItemWidget({
-    required String name,
+    required MenuSection menuSection,
     IconData? iconData,
     bool isMore = false,
-    bool isChildMore = false,
   }) {
+    var isChildMore = menuSection.parent?.isMore ?? false;
     return Row(
       children: [
         if (isChildMore) const SizedBox(width: 12),
@@ -64,7 +66,7 @@ class MenuSectionWidget extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: Text(
-            name,
+            menuSection.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -75,12 +77,19 @@ class MenuSectionWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        Icon(
-          isMore ? Icons.keyboard_arrow_up : Icons.more_vert,
-          size: 20,
-          color: Colors.black87,
+        InkWell(
+          onTap: () => showMenuMore(menuSection),
+          child: Icon(
+            isMore ? Icons.keyboard_arrow_up : Icons.more_vert,
+            size: 20,
+            color: Colors.black87,
+          ),
         ),
       ],
     );
+  }
+
+  void showMenuMore(MenuSection menuSection) async {
+    await SampleCallNativeFlutter.showMenuMore(jsonEncode(menuSection.map));
   }
 }

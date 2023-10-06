@@ -26,5 +26,13 @@ class MenuSection {
     );
   }
 
+  Map<String, dynamic> get map => {
+        "id": id,
+        "name": name,
+        "key": key,
+        "is_segment": isSegment,
+        "children": children.map((e) => e.map).toList(),
+      };
+
   bool get isMore => key == MenuType.MORE.key;
 }
