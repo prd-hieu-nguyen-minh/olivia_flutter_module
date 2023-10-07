@@ -29,7 +29,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   syncfusion_flutter_calendar: ^20.4.52
   http: ^0.13.4
-  fluttertoast: ^8.2.2
   dio: ^5.3.2
   horizontal_data_table: ^4.3.1
 

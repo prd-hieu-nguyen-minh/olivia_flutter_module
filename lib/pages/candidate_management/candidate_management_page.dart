@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/core/models/CandidateResponse.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
 import 'package:olivia_flutter_module/pages/candidate_management/widgets/candidate_response_widget.dart';
@@ -46,21 +44,6 @@ class _CandidateManagementPageState extends State<CandidateManagementPage> {
           ),
         ],
       ),
-    );
-  }
-
-  void abc() async {
-    var platform = const MethodChannel("abc");
-    platform.setMethodCallHandler(
-      (call) async {
-        if (call.method == "name") {
-          var headers = call.arguments;
-          Fluttertoast.showToast(
-            msg: headers.toString(),
-            toastLength: Toast.LENGTH_LONG,
-          );
-        }
-      },
     );
   }
 
