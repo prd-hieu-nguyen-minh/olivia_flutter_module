@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui' as wd;
 
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ Widget chooseWidget(String? route) {
     case "my_calendar":
       return const MyHomePage();
     default:
-      return const CandidateManagementPage();
+      return UnknownRoutePage(
+        route: route ?? "unknown",
+      );
   }
 }
