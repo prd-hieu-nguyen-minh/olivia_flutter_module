@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/pages/widgets/menu_section_widget.dart';
@@ -12,13 +13,29 @@ class BoardWidget extends StatefulWidget {
 }
 
 class _BoardWidgetState extends State<BoardWidget> {
+  final menuMethodChannel = const MethodChannel("flutter_menu_channel");
+
   late List<MenuSection> menuData;
   late ApiServices apiServices;
+  late String boardTitle;
 
   @override
   void initState() {
     menuData = [];
     apiServices = ApiServices();
+    boardTitle = "Candidate Management";
+    menuMethodChannel.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case "menu_more_result":
+          {
+            var text = call.arguments.toString();
+            setState(() {
+              boardTitle = text;
+            });
+          }
+          break;
+      }
+    });
     super.initState();
   }
 
@@ -55,13 +72,13 @@ class _BoardWidgetState extends State<BoardWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       height: 60,
       child: Row(
-        children: const [
+        children: [
           Expanded(
             child: Text(
-              "Candidate Management",
+              boardTitle,
             ),
           ),
-          Icon(
+          const Icon(
             Icons.filter_list,
             size: 24,
           ),
