@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/pages/widgets/menu_section_widget.dart';
@@ -29,9 +30,10 @@ class _BoardWidgetState extends State<BoardWidget> {
         case "menu_more_result":
           {
             var text = call.arguments.toString();
-            setState(() {
-              boardTitle = text;
-            });
+            Fluttertoast.showToast(
+              msg: text,
+              toastLength: Toast.LENGTH_SHORT,
+            );
           }
           break;
       }
