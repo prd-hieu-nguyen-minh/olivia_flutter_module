@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui' as wd;
 
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ Widget getApplication(String? route) {
   return MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
+      fontFamily: 'OpenSans',
       primarySwatch: Colors.blue,
     ),
     home: Scaffold(
