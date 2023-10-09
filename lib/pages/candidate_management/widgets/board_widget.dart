@@ -18,13 +18,11 @@ class _BoardWidgetState extends State<BoardWidget> {
 
   late List<MenuSection> menuData;
   late ApiServices apiServices;
-  late String boardTitle;
 
   @override
   void initState() {
     menuData = [];
     apiServices = ApiServices();
-    boardTitle = "Candidate Management";
     menuMethodChannel.setMethodCallHandler((call) async {
       switch (call.method) {
         case "menu_more_result":
@@ -76,8 +74,11 @@ class _BoardWidgetState extends State<BoardWidget> {
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              boardTitle,
+            child: InkWell(
+              onTap: showConfirmDialog,
+              child: const Text(
+                "Candidate Management",
+              ),
             ),
           ),
           const Icon(
@@ -105,5 +106,25 @@ class _BoardWidgetState extends State<BoardWidget> {
     setState(() {
       this.menuData = menuData;
     });
+  }
+
+  void showConfirmDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Show dialog"),
+        content: const Text("Is this really dialog?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Yes"),
+          ),
+        ],
+      ),
+    );
   }
 }
