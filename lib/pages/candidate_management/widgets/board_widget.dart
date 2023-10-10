@@ -36,61 +36,12 @@ class _BoardWidgetState extends State<BoardWidget> {
           break;
       }
     });
+    getCandidateInbox();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    getCandidateInbox();
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black26,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        children: [
-          _buildHeader(),
-          const Divider(
-            color: Colors.black12,
-            thickness: 3,
-            height: 3,
-          ),
-          Expanded(
-            child: _buildContent(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      height: 60,
-      child: Row(
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: showConfirmDialog,
-              child: const Text(
-                "Candidate Management",
-              ),
-            ),
-          ),
-          const Icon(
-            Icons.filter_list,
-            size: 24,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContent() {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: menuData.length,
