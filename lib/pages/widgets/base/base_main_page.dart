@@ -27,8 +27,11 @@ class BaseMainPage extends StatelessWidget {
           ),
           SizedBox(width: mainSpace),
           Expanded(
-            child: MainBorderWidget(
-              child: content,
+            child: SizedBox(
+              height: double.infinity,
+              child: MainBorderWidget(
+                child: content,
+              ),
             ),
           ),
         ],

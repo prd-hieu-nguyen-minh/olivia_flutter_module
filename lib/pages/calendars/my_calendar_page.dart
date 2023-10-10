@@ -20,13 +20,14 @@ class MyCalendarPage extends StatefulWidget {
 class _MyCalendarPageState extends State<MyCalendarPage> {
   @override
   Widget build(BuildContext context) {
-    return SfCalendar(
-      view: CalendarView.month,
-      firstDayOfWeek: 6,
-      //initialDisplayDate: DateTime(2021, 03, 01, 08, 30),
-      //initialSelectedDate: DateTime(2021, 03, 01, 08, 30),
-      dataSource: MeetingDataSource(getAppointments()),
-    );
+    return Container();
+    // return SfCalendar(
+    //   view: CalendarView.month,
+    //   firstDayOfWeek: 6,
+    //   //initialDisplayDate: DateTime(2021, 03, 01, 08, 30),
+    //   //initialSelectedDate: DateTime(2021, 03, 01, 08, 30),
+    //   dataSource: MeetingDataSource(getAppointments()),
+    // );
   }
 }
 
