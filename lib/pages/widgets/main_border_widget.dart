@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class MainBorderWidget extends StatelessWidget {
   final Widget child;
+  final double radius;
 
   const MainBorderWidget({
     super.key,
     required this.child,
+    this.radius = 24,
   });
 
   @override
@@ -17,7 +19,7 @@ class MainBorderWidget extends StatelessWidget {
           color: Colors.black26,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(radius),
       ),
       child: child,
     );

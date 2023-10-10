@@ -71,8 +71,8 @@ class _ToolBarWidgetState extends State<ToolBarWidget> {
           width: 1,
         ),
       ),
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           Icon(
             Icons.search,
             color: Colors.black26,

@@ -11,8 +11,7 @@ abstract class EmployeeRemoteDataSource {
 class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
   final DioService _dioService;
 
-  EmployeeRemoteDataSourceImpl()
-      : _dioService = DioService(URLConstant.ltsstgApiUrl, Dio());
+  EmployeeRemoteDataSourceImpl() : _dioService = DioService(URLConstant.ltsstgApiUrl, Dio());
 
   @override
   Future<List<MenuSection>> getNavigation() async {
@@ -25,11 +24,8 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
         headers: headers,
       ),
     );
-    return (response as List?)?.map(
-          (e) {
-            return MenuSection.fromJson(e);
-          },
-        ).toList() ??
-        [];
+    return (response as List? ?? []).map((e) {
+      return MenuSection.fromJson(e);
+    }).toList();
   }
 }

@@ -6,6 +6,7 @@ class MenuSection {
   final dynamic key;
   final bool isSegment;
   final int count;
+  final dynamic filterData;
   final List<MenuSection> children;
   MenuSection? parent;
 
@@ -15,6 +16,7 @@ class MenuSection {
     required this.key,
     required this.count,
     required this.isSegment,
+    this.filterData,
     this.children = const [],
   });
 
@@ -25,6 +27,7 @@ class MenuSection {
       key: json?["key"],
       count: json?["count"] ?? 0,
       isSegment: json?["is_segment"] ?? false,
+      filterData: json?["filter_data"],
       children: (json?["children"] as List? ?? []).map((e) => MenuSection.fromJson(e)).toList(),
     );
   }
