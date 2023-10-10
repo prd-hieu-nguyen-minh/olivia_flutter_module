@@ -13,12 +13,15 @@ class UnknownRoutePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("Unknown route: $route"),
           const SizedBox(height: 16),
           FutureBuilder(
             future: SampleCallNativeFlutter.platformVersion,
-            builder: (context, snapshot) => Text(snapshot.data?.toString() ?? ""),
+            builder: (context, snapshot) => Text(
+              snapshot.data?.toString() ?? "",
+            ),
           ),
         ],
       ),
