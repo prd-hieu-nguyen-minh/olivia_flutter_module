@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/common/utils/utils.dart';
 import 'package:olivia_flutter_module/core/enums/menu_type.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
-import 'package:olivia_flutter_module/utils/app_utils.dart';
 
 class MenuSectionWidget extends StatelessWidget {
   final MenuSection menuSection;
@@ -23,7 +23,7 @@ class MenuSectionWidget extends StatelessWidget {
   }
 
   Widget _buildContent() {
-    var menuType = AppUtils.getMenuTypeFromKey(menuSection.key);
+    var menuType = Utils.getMenuTypeFromKey(menuSection.key) ?? MenuType.INBOX;
     if (menuType == null) {
       return const SizedBox.shrink();
     }

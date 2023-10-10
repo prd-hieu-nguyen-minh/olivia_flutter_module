@@ -20,7 +20,7 @@ class BaseMainPage extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 250,
+            width: 300,
             child: MainBorderWidget(
               child: board,
             ),

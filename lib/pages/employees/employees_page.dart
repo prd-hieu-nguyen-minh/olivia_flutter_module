@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   Widget build(BuildContext context) {
     return BaseBoardMainPage(
       title: _buildTitle(),
-      mainBoard: const SizedBox.shrink(),
+      mainBoard: const EmployeeMainBoard(),
       content: const SizedBox.shrink(),
     );
   }

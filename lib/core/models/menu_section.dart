@@ -3,7 +3,7 @@ import 'package:olivia_flutter_module/core/enums/menu_type.dart';
 class MenuSection {
   final int id;
   final String name;
-  final int key;
+  final dynamic key;
   final bool isSegment;
   final List<MenuSection> children;
   MenuSection? parent;
@@ -16,13 +16,15 @@ class MenuSection {
     this.children = const [],
   });
 
-  factory MenuSection.fromJson(Map<dynamic, dynamic> json) {
+  factory MenuSection.fromJson(Map<dynamic, dynamic>? json) {
     return MenuSection(
-      id: json["id"] ?? 0,
-      name: json["name"] ?? "",
-      key: json["key"] ?? 0,
-      isSegment: json["is_segment"] ?? false,
-      children: (json["children"] as List? ?? []).map((e) => MenuSection.fromJson(e)).toList(),
+      id: json?["id"] ?? 0,
+      name: json?["name"] ?? "",
+      key: json?["key"],
+      isSegment: json?["is_segment"] ?? false,
+      children: (json?["children"] as List? ?? [])
+          .map((e) => MenuSection.fromJson(e))
+          .toList(),
     );
   }
 
