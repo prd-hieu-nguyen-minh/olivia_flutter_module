@@ -23,7 +23,7 @@ class MenuSectionWidget extends StatelessWidget {
   }
 
   Widget _buildContent() {
-    var menuType = Utils.getMenuTypeFromKey(menuSection.key) ?? MenuType.INBOX;
+    var menuType = Utils.getMenuTypeFromKey(menuSection.key);
     if (menuType == null) {
       return const SizedBox.shrink();
     }

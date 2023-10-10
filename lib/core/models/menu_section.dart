@@ -5,6 +5,7 @@ class MenuSection {
   final String name;
   final dynamic key;
   final bool isSegment;
+  final int count;
   final List<MenuSection> children;
   MenuSection? parent;
 
@@ -12,6 +13,7 @@ class MenuSection {
     required this.id,
     required this.name,
     required this.key,
+    required this.count,
     required this.isSegment,
     this.children = const [],
   });
@@ -21,10 +23,9 @@ class MenuSection {
       id: json?["id"] ?? 0,
       name: json?["name"] ?? "",
       key: json?["key"],
+      count: json?["count"] ?? 0,
       isSegment: json?["is_segment"] ?? false,
-      children: (json?["children"] as List? ?? [])
-          .map((e) => MenuSection.fromJson(e))
-          .toList(),
+      children: (json?["children"] as List? ?? []).map((e) => MenuSection.fromJson(e)).toList(),
     );
   }
 

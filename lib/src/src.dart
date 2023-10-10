@@ -16,6 +16,11 @@ class SampleCallNativeFlutter {
     return headers;
   }
 
+  static Future<String?> get apiUrl async {
+    final url = await _channel.invokeMethod("api_url");
+    return url;
+  }
+
   static Future<String?> get companyId async {
     final companyId = await _channel.invokeMethod('companyId');
     return companyId?.toString();

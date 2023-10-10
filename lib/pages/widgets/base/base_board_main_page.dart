@@ -27,6 +27,7 @@ class BaseBoardMainPage extends StatelessWidget {
             thickness: 3,
             height: 3,
           ),
+          const SizedBox(height: 8),
           Expanded(
             child: mainBoard,
           ),

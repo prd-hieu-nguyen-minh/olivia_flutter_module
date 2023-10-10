@@ -12,7 +12,7 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
     single<List<MenuSection>>(
       () => _employeeRepository.getNavigation(),
       onSuccess: (data) => GetNavigationEmployeeSuccess(
-        menuSections: data,
+        menuSections: data.where((e) => e.count != 0).toList(),
       ),
     );
   }
