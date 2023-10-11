@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:olivia_flutter_module/blocs/blocs.dart';
+import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
+import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
+import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/core/models/toobar/export_toolbar.dart';
+import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
+import 'package:olivia_flutter_module/core/models/toobar/search_toolbar.dart';
+import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_border_widget.dart';
+import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
   const EmployeesPage({super.key});
@@ -11,11 +19,28 @@ class EmployeesPage extends StatefulWidget {
 }
 
 class _EmployeesPageState extends State<EmployeesPage> {
+  late EmployeeBloc _employeeBloc;
+  late ValueNotifier<MenuSection?> currentMenuNotifier;
+
+  @override
+  void initState() {
+    _employeeBloc = EmployeeBloc();
+    currentMenuNotifier = ValueNotifier(null);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    currentMenuNotifier.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _employeeBloc.getNavigation();
     return BaseBoardMainPage(
       title: _buildTitle(),
-      mainBoard: const EmployeeMainBoard(),
+      mainBoard: _buildMainBoard(),
       content: _buildContent(),
     );
   }
@@ -43,127 +68,107 @@ class _EmployeesPageState extends State<EmployeesPage> {
     );
   }
 
+  Widget _buildMainBoard() {
+    return BlocConsumer(
+      bloc: _employeeBloc,
+      listener: (context, state) {
+        if (state is GetNavigationEmployeeSuccess) {
+          if (state.menuSections.isNotEmpty) {
+            currentMenuNotifier.value = state.menuSections.first;
+          }
+        }
+      },
+      builder: (context, state) {
+        if (state is InProgressState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is GetNavigationEmployeeSuccess) {
+          return ValueListenableBuilder<MenuSection?>(
+            valueListenable: currentMenuNotifier,
+            builder: (_, currentMenu, __) {
+              return ListView.builder(
+                itemCount: state.menuSections.length,
+                itemBuilder: (context, index) {
+                  MenuSection menuSection = state.menuSections[index];
+                  return EmployeeSectionWidget(
+                    menuSection: menuSection,
+                    isCurrent: menuSection == currentMenu,
+                    onSelected: (menuSection) {
+                      currentMenuNotifier.value = menuSection;
+                    },
+                  );
+                },
+              );
+            },
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
   Widget _buildContent() {
     return Padding(
       padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              "All employees",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+      child: ValueListenableBuilder(
+        valueListenable: currentMenuNotifier,
+        builder: (_, value, __) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  value?.name ?? "",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: _buildToolBar(),
-          ),
-        ],
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: _buildToolBar(
+                  employeeCount: value?.count ?? 0,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildToolBar() {
+  Widget _buildToolBar({
+    required int employeeCount,
+  }) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Text(
-            "35 employees",
-            style: TextStyle(
+            "$employeeCount employees",
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,
             ),
           ),
         ),
-        const SizedBox(width: 8),
-        const MainBorderWidget(
-          radius: 4,
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Icon(
-              Icons.filter_list_sharp,
-              color: Colors.black87,
-              size: 24,
+        ToolbarWidget(
+          toolbars: [
+            IconToolbar(
+              icon: Icons.filter_list_sharp,
             ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        _buildSearchBar(),
-        const SizedBox(width: 8),
-        const MainBorderWidget(
-          radius: 4,
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Icon(
-              Icons.dashboard_customize,
-              color: Colors.black87,
-              size: 24,
+            SearchToolbar(),
+            IconToolbar(
+              icon: Icons.dashboard_customize,
             ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        const MainBorderWidget(
-          radius: 4,
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.cloud_download_outlined,
-                  color: Colors.black87,
-                  size: 24,
-                ),
-                SizedBox(width: 2),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.black12,
-                  size: 24,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return const MainBorderWidget(
-      radius: 4,
-      child: SizedBox(
-        width: 200,
-        height: 40,
-        child: Row(
-          children: [
-            Icon(
-              Icons.search,
-              color: Colors.black26,
-              size: 20,
-            ),
-            SizedBox(width: 4),
-            Expanded(
-              child: TextField(
-                maxLines: 1,
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: "Search",
-                  hintStyle: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 14,
-                  ),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
+            ExportToolbar(),
           ],
         ),
-      ),
+      ],
     );
   }
 }

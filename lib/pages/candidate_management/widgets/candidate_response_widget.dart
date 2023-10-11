@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/models/CandidateResponse.dart';
-import 'package:olivia_flutter_module/pages/candidate_management/widgets/toolbar_widget.dart';
+import 'package:olivia_flutter_module/pages/candidate_management/widgets/candidate_toolbar_widget.dart';
 
 class CandidateResponseWidget extends StatefulWidget {
   final CandidateResponse? response;
@@ -11,7 +11,8 @@ class CandidateResponseWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CandidateResponseWidget> createState() => _CandidateResponseWidgetState();
+  State<CandidateResponseWidget> createState() =>
+      _CandidateResponseWidgetState();
 }
 
 class _CandidateResponseWidgetState extends State<CandidateResponseWidget> {
@@ -36,7 +37,7 @@ class _CandidateResponseWidgetState extends State<CandidateResponseWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ToolBarWidget(
+        CandidateToolBarWidget(
           total: widget.response?.total ?? 0,
         ),
         Expanded(
@@ -72,11 +73,13 @@ class _CandidateResponseWidgetState extends State<CandidateResponseWidget> {
                 child: SingleChildScrollView(
                   controller: verticalScrollBar,
                   child: Column(
-                    children: (widget.response?.candidates ?? []).map((candidate) {
+                    children:
+                        (widget.response?.candidates ?? []).map((candidate) {
                       var candidateMap = candidate.map;
                       return Row(
                         children: (widget.response?.columns ?? [])
-                            .map((column) => _buildItem(candidateMap[column.id] ?? ""))
+                            .map((column) =>
+                                _buildItem(candidateMap[column.id] ?? ""))
                             .toList(),
                       );
                     }).toList(),

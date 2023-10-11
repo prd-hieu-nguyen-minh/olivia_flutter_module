@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ToolBarWidget extends StatefulWidget {
+class CandidateToolBarWidget extends StatefulWidget {
   final int total;
 
-  const ToolBarWidget({
+  const CandidateToolBarWidget({
     Key? key,
     required this.total,
   }) : super(key: key);
 
   @override
-  State<ToolBarWidget> createState() => _ToolBarWidgetState();
+  State<CandidateToolBarWidget> createState() => _CandidateToolBarWidgetState();
 }
 
-class _ToolBarWidgetState extends State<ToolBarWidget> {
+class _CandidateToolBarWidgetState extends State<CandidateToolBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
