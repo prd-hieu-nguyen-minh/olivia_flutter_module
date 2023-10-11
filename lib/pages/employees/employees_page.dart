@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
+import 'package:olivia_flutter_module/core/models/candidates/column.dart'
+    as Col;
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/core/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
@@ -74,7 +76,9 @@ class _EmployeesPageState extends State<EmployeesPage> {
       listener: (context, state) {
         if (state is GetNavigationEmployeeSuccess) {
           if (state.menuSections.isNotEmpty) {
-            currentMenuNotifier.value = state.menuSections.first;
+            var currentMenuSection = state.menuSections.first;
+            currentMenuNotifier.value = currentMenuSection;
+            _employeeBloc.getEmployees(currentMenuSection);
           }
         }
       },
@@ -135,6 +139,10 @@ class _EmployeesPageState extends State<EmployeesPage> {
                   employeeCount: value?.count ?? 0,
                 ),
               ),
+              const SizedBox(height: 24),
+              Expanded(
+                child: _buildEmployeeListView(),
+              ),
             ],
           );
         },
@@ -169,6 +177,86 @@ class _EmployeesPageState extends State<EmployeesPage> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildEmployeeListView() {
+    return BlocBuilder(
+      bloc: _employeeBloc,
+      builder: (context, state) {
+        if (state is GetEmployeesSuccess) {
+          return _buildListView(
+              columns: state.response.getColumns(),
+              records: state.response.employees.map((e) => e.map).toList());
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildListView({
+    required List<Col.Column> columns,
+    required List<Map<String, dynamic>> records,
+  }) {
+    if (columns.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    var horizontalScrollBar = ScrollController();
+    var verticalScrollBar = ScrollController();
+    return Scrollbar(
+      controller: horizontalScrollBar,
+      child: SingleChildScrollView(
+        controller: horizontalScrollBar,
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          children: [
+            Row(
+              children: columns
+                  .map((e) => _buildItem(
+                        e.text,
+                        isTitle: true,
+                      ))
+                  .toList(),
+            ),
+            Flexible(
+              child: Scrollbar(
+                controller: verticalScrollBar,
+                child: SingleChildScrollView(
+                  controller: verticalScrollBar,
+                  child: Column(
+                    children: records.map((map) {
+                      return Row(
+                        children: (columns)
+                            .map((column) => _buildItem(map[column.id] ?? ""))
+                            .toList(),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildItem(String text, {isTitle = false}) {
+    return SizedBox(
+      width: 180,
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: isTitle ? FontWeight.w700 : FontWeight.w400,
+            fontSize: 16,
+          ),
+        ),
+      ),
     );
   }
 }

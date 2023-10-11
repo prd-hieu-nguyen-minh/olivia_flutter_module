@@ -17,4 +17,24 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
       ),
     );
   }
+
+  void getEmployees(
+    MenuSection menuSection, {
+    String keyword = "",
+    int page = 1,
+    int perPage = 30,
+  }) {
+    single(
+      () => _employeeRepository.getEmployees({
+        "employee_type": menuSection.key,
+        "filter_data": menuSection.filterData,
+        "keyword": keyword,
+        "page": page,
+        "per_page": perPage,
+      }),
+      onSuccess: (data) => GetEmployeesSuccess(
+        response: data,
+      ),
+    );
+  }
 }

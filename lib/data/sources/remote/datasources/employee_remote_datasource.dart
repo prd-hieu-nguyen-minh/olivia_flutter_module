@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/data/models/employee_response.dart';
 import 'package:olivia_flutter_module/data/sources/remote/service/dio_client.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/src/src.dart';
 
 abstract class EmployeeRemoteDataSource {
   Future<List<MenuSection>> getNavigation();
+
+  Future<EmployeeResponse> getEmployees(Map<String, dynamic> params);
 }
 
 class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
@@ -27,5 +30,20 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
     return (response as List? ?? []).map((e) {
       return MenuSection.fromJson(e);
     }).toList();
+  }
+
+  @override
+  Future<EmployeeResponse> getEmployees(Map<String, dynamic> params) async {
+    final headers = (await SampleCallNativeFlutter.headers)?.map(
+      (key, value) => MapEntry(key.toString(), value.toString()),
+    );
+    final response = await _dioService.post(
+      'settings/employees/search',
+      queryParameters: params,
+      options: Options(
+        headers: headers,
+      ),
+    );
+    return EmployeeResponse.fromJson(response?["data"]);
   }
 }
