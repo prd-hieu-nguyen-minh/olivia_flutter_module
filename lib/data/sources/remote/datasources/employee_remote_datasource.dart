@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:olivia_flutter_module/core/common/constants/url_constant.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/data/sources/remote/service/dio_client.dart';
+import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/src/src.dart';
 
 abstract class EmployeeRemoteDataSource {
@@ -11,7 +11,7 @@ abstract class EmployeeRemoteDataSource {
 class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
   final DioService _dioService;
 
-  EmployeeRemoteDataSourceImpl() : _dioService = DioService(URLConstant.ltsstgApiUrl, Dio());
+  EmployeeRemoteDataSourceImpl() : _dioService = getIt<DioService>();
 
   @override
   Future<List<MenuSection>> getNavigation() async {
@@ -19,7 +19,7 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
       (key, value) => MapEntry(key.toString(), value.toString()),
     );
     final response = await _dioService.get(
-      '/settings/employees/navigation',
+      'settings/employees/navigation',
       options: Options(
         headers: headers,
       ),

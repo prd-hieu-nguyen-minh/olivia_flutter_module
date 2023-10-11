@@ -1,24 +1,24 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:olivia_flutter_module/main.dart';
 
 const _kDefaultConnectTimeout = Duration.millisecondsPerMinute;
 const _kDefaultReceiveTimeout = Duration.millisecondsPerMinute;
 
 class DioService {
-  final String baseUrl;
   final Dio _dio;
   final List<Interceptor> interceptors;
 
   DioService(
-    this.baseUrl,
     Dio dio, {
     this.interceptors = const [],
   }) : _dio = Dio() {
     _dio
-      ..options.baseUrl = baseUrl
-      ..options.connectTimeout = const Duration(milliseconds: _kDefaultConnectTimeout)
-      ..options.receiveTimeout = const Duration(milliseconds: _kDefaultConnectTimeout)
+      ..options.connectTimeout =
+          const Duration(milliseconds: _kDefaultConnectTimeout)
+      ..options.receiveTimeout =
+          const Duration(milliseconds: _kDefaultReceiveTimeout)
       ..httpClientAdapter
       ..options.headers = {'Content-Type': 'application/json; charset=UTF-8'};
     if (interceptors.isNotEmpty) {
@@ -34,8 +34,12 @@ class DioService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
+      var apiUrl = await SampleCallNativeFlutter.apiUrl;
+      if (apiUrl == null) {
+        throw Exception("Api url not found");
+      }
       final response = await _dio.get(
-        uri,
+        "$apiUrl$uri",
         queryParameters: queryParameters,
         options: options,
         cancelToken: cancelToken,
@@ -45,9 +49,9 @@ class DioService {
     } on SocketException catch (e) {
       throw SocketException(e.toString());
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
+      throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -61,8 +65,12 @@ class DioService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
+      var apiUrl = await SampleCallNativeFlutter.apiUrl;
+      if (apiUrl == null) {
+        throw Exception("Api url not found");
+      }
       final response = await _dio.post(
-        uri,
+        "$apiUrl$uri",
         data: data,
         queryParameters: queryParameters,
         options: options,
@@ -72,9 +80,9 @@ class DioService {
       );
       return response.data;
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
+      throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }
