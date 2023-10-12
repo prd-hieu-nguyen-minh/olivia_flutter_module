@@ -24,8 +24,8 @@ class BaseAppBar extends StatelessWidget {
             children: [
               Positioned(
                 left: 10,
-                top: 0,
-                bottom: 0,
+                top: 4,
+                bottom: 4,
                 child: prefix ?? const SizedBox.shrink(),
               ),
               Center(

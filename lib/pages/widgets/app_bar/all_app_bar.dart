@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:olivia_flutter_module/core/resources/app_images.dart';
 import 'package:olivia_flutter_module/pages/widgets/app_bar/base/base_app_bar.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_border_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/text/title_text.dart';
@@ -14,13 +16,14 @@ class AllAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseAppBar(
-      prefix: const MainBorderWidget(
+      prefix: MainBorderWidget(
         radius: 4,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          child: Icon(
-            Icons.add_box,
-            size: 24,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: SvgPicture.asset(
+            AppImages.icAllApp,
+            height: 14,
+            width: 14,
           ),
         ),
       ),
