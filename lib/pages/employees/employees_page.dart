@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
@@ -12,6 +11,7 @@ import 'package:olivia_flutter_module/core/models/toobar/search_toolbar.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
+import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -106,9 +106,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
       },
       builder: (context, state) {
         if (state is InProgressState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const MainLoadingIndicator();
         }
         if (state is GetNavigationEmployeeSuccess) {
           return ValueListenableBuilder<MenuSection?>(
@@ -208,9 +206,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
       bloc: _employeeBloc,
       builder: (context, state) {
         if (state is InProgressState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const MainLoadingIndicator();
         }
         if (state is GetEmployeesSuccess) {
           return _buildListView(

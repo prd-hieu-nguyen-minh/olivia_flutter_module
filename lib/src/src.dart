@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class SampleCallNativeFlutter {
-  static const MethodChannel _channel = MethodChannel('sample_plugin_flutter');
+  static const MethodChannel _channel = MethodChannel('common_channel');
   static const MethodChannel _menuChannel = MethodChannel("menu_channel");
 
   static Future<String?> get platformVersion async {
