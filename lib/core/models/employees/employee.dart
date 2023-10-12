@@ -12,6 +12,7 @@ class Employee {
   final dynamic employeeId;
   final dynamic workEmail;
   final dynamic workCountry;
+  final dynamic preferredLanguage;
 
   Employee({
     this.name,
@@ -27,6 +28,7 @@ class Employee {
     this.employeeId,
     this.workEmail,
     this.workCountry,
+    this.preferredLanguage,
   });
 
   factory Employee.fromJson(Map? json) {
@@ -42,6 +44,7 @@ class Employee {
       candidateApplicationId: json?[""],
       userRole: json?["user_role"],
       workEmail: json?["work_email"],
+      preferredLanguage: json?["preferred_language"],
     );
   }
 
@@ -51,5 +54,6 @@ class Employee {
         "user_role": userRole,
         "work_email": workEmail,
         "work_country": workCountry,
+        "preferred_language": preferredLanguage,
       };
 }

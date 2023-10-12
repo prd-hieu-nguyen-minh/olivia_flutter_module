@@ -11,6 +11,7 @@ import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/search_toolbar.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
+import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -23,11 +24,15 @@ class EmployeesPage extends StatefulWidget {
 class _EmployeesPageState extends State<EmployeesPage> {
   late EmployeeBloc _employeeBloc;
   late ValueNotifier<MenuSection?> _currentMenuNotifier;
+  late Map<int, ScrollController> _horScrollControllerMap;
+  late ScrollController _employeesScrollController;
 
   @override
   void initState() {
     _employeeBloc = EmployeeBloc();
     _currentMenuNotifier = ValueNotifier(null);
+    _horScrollControllerMap = {};
+    _employeesScrollController = ScrollController();
     _employeeBloc.getNavigation();
     super.initState();
   }
@@ -40,7 +45,11 @@ class _EmployeesPageState extends State<EmployeesPage> {
 
   @override
   void dispose() {
+    _employeesScrollController.dispose();
     _currentMenuNotifier.dispose();
+    for (var controller in _horScrollControllerMap.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -49,7 +58,10 @@ class _EmployeesPageState extends State<EmployeesPage> {
     return BaseBoardMainPage(
       title: _buildTitle(),
       mainBoard: _buildMainBoard(),
-      content: _buildContent(),
+      content: ScrollConfiguration(
+        behavior: DisableScrollGrowBehavior(),
+        child: _buildContent(),
+      ),
     );
   }
 
@@ -214,37 +226,61 @@ class _EmployeesPageState extends State<EmployeesPage> {
     required List<Col.Column> columns,
     required List<Map<String, dynamic>> records,
   }) {
-    var horizontalScrollBar = ScrollController();
-    var verticalScrollBar = ScrollController();
     return Scrollbar(
-      controller: horizontalScrollBar,
-      child: SingleChildScrollView(
-        controller: horizontalScrollBar,
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          children: [
-            Row(
-              children: columns.map((e) => _buildItem(e.text, isTitle: true)).toList(),
-            ),
-            Flexible(
-              child: Scrollbar(
-                controller: verticalScrollBar,
+      controller: _employeesScrollController,
+      child: ListView.builder(
+        controller: _employeesScrollController,
+        itemCount: records.length + 1,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          var horScrollController = _horScrollControllerMap[index] ?? ScrollController();
+          _horScrollControllerMap.putIfAbsent(index, () => horScrollController);
+          horScrollController.addListener(() {
+            getHorScrollListener(horScrollController);
+          });
+          if (index == 0) {
+            return Row(
+              children: [
+                _buildItem(
+                  columns.first.text,
+                  isTitle: true,
+                ),
+                Flexible(
+                  child: SingleChildScrollView(
+                    controller: horScrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: columns
+                          .sublist(1, columns.length)
+                          .map((e) => _buildItem(
+                                e.text,
+                                isTitle: true,
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Row(
+            children: [
+              _buildItem(records[index - 1][columns.first.id]?.toString() ?? ""),
+              Flexible(
                 child: SingleChildScrollView(
-                  controller: verticalScrollBar,
-                  child: Column(
-                    children: records.map((map) {
-                      return Row(
-                        children: columns
-                            .map((column) => _buildItem(map[column.id]?.toString() ?? ""))
-                            .toList(),
-                      );
-                    }).toList(),
+                  controller: horScrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: columns
+                        .sublist(1, columns.length)
+                        .map((c) => _buildItem(records[index - 1][c.id]?.toString() ?? ""))
+                        .toList(),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -272,6 +308,14 @@ class _EmployeesPageState extends State<EmployeesPage> {
     if (_currentMenuNotifier.value != menuSection) {
       _currentMenuNotifier.value = menuSection;
       _employeeBloc.getEmployees(menuSection);
+    }
+  }
+
+  void getHorScrollListener(ScrollController controller) {
+    for (var c in _horScrollControllerMap.values) {
+      if (c != controller && c.hasClients && c.offset != controller.offset) {
+        c.jumpTo(controller.offset);
+      }
     }
   }
 }

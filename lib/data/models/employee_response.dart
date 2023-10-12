@@ -1,5 +1,5 @@
 import 'package:olivia_flutter_module/core/models/candidates/column.dart';
-import 'package:olivia_flutter_module/core/models/candidates/employee.dart';
+import 'package:olivia_flutter_module/core/models/employees/employee.dart';
 
 class EmployeeResponse {
   final List<Employee> employees;
@@ -40,6 +40,10 @@ class EmployeeResponse {
       Column(
         id: "work_country",
         text: "Work Country",
+      ),
+      Column(
+        id: "preferred_language",
+        text: "Preferred Language",
       ),
     ];
   }
