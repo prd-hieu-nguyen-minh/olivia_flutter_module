@@ -8,7 +8,7 @@ import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/core/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/search_toolbar.dart';
-import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
+import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
@@ -33,14 +33,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
     _currentMenuNotifier = ValueNotifier(null);
     _horScrollControllerMap = {};
     _employeesScrollController = ScrollController();
-    _employeeBloc.getNavigation();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _employeeBloc.getNavigation();
-    super.didChangeDependencies();
   }
 
   @override
@@ -57,7 +50,9 @@ class _EmployeesPageState extends State<EmployeesPage> {
   Widget build(BuildContext context) {
     return BaseBoardMainPage(
       title: _buildTitle(),
-      mainBoard: _buildMainBoard(),
+      mainBoard: EmployeeMainBoardWidget(
+        notifier: _currentMenuNotifier,
+      ),
       content: ScrollConfiguration(
         behavior: DisableScrollGrowBehavior(),
         child: _buildContent(),
@@ -88,49 +83,6 @@ class _EmployeesPageState extends State<EmployeesPage> {
     );
   }
 
-  Widget _buildMainBoard() {
-    return BlocConsumer(
-      bloc: _employeeBloc,
-      listenWhen: (previous, current) {
-        return current is GetNavigationEmployeeSuccess;
-      },
-      listener: (context, state) {
-        if (state is GetNavigationEmployeeSuccess) {
-          if (state.menuSections.isNotEmpty) {
-            updateCurrentMenu(state.menuSections.first);
-          }
-        }
-      },
-      buildWhen: (previous, current) {
-        return _currentMenuNotifier.value == null || current is GetNavigationEmployeeSuccess;
-      },
-      builder: (context, state) {
-        if (state is InProgressState) {
-          return const MainLoadingIndicator();
-        }
-        if (state is GetNavigationEmployeeSuccess) {
-          return ValueListenableBuilder<MenuSection?>(
-            valueListenable: _currentMenuNotifier,
-            builder: (_, currentMenu, __) {
-              return ListView.builder(
-                itemCount: state.menuSections.length,
-                itemBuilder: (context, index) {
-                  MenuSection menuSection = state.menuSections[index];
-                  return EmployeeSectionWidget(
-                    menuSection: menuSection,
-                    isCurrent: menuSection == currentMenu,
-                    onSelected: updateCurrentMenu,
-                  );
-                },
-              );
-            },
-          );
-        }
-        return const SizedBox.shrink();
-      },
-    );
-  }
-
   Widget _buildContent() {
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -140,6 +92,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
           if (value == null) {
             return const SizedBox.shrink();
           }
+          _employeeBloc.getEmployees(value);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
