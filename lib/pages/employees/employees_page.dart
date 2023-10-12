@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
-import 'package:olivia_flutter_module/core/models/candidates/column.dart' as Col;
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/core/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/search_toolbar.dart';
+import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
+import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
@@ -24,25 +25,17 @@ class EmployeesPage extends StatefulWidget {
 class _EmployeesPageState extends State<EmployeesPage> {
   late EmployeeBloc _employeeBloc;
   late ValueNotifier<MenuSection?> _currentMenuNotifier;
-  late Map<int, ScrollController> _horScrollControllerMap;
-  late ScrollController _employeesScrollController;
 
   @override
   void initState() {
-    _employeeBloc = EmployeeBloc();
+    _employeeBloc = getIt<EmployeeBloc>();
     _currentMenuNotifier = ValueNotifier(null);
-    _horScrollControllerMap = {};
-    _employeesScrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _employeesScrollController.dispose();
     _currentMenuNotifier.dispose();
-    for (var controller in _horScrollControllerMap.values) {
-      controller.dispose();
-    }
     super.dispose();
   }
 
@@ -162,109 +155,14 @@ class _EmployeesPageState extends State<EmployeesPage> {
           return const MainLoadingIndicator();
         }
         if (state is GetEmployeesSuccess) {
-          return _buildListView(
-              columns: state.response.getColumns(),
-              records: state.response.employees.map((e) => e.map).toList());
+          return MainListView(
+            columns: state.response.getColumns(),
+            records: state.response.employees.map((e) => e.map).toList(),
+            pingCount: 1,
+          );
         }
         return const SizedBox.shrink();
       },
     );
-  }
-
-  Widget _buildListView({
-    required List<Col.Column> columns,
-    required List<Map<String, dynamic>> records,
-  }) {
-    return Scrollbar(
-      controller: _employeesScrollController,
-      child: ListView.builder(
-        controller: _employeesScrollController,
-        itemCount: records.length + 1,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          var horScrollController = _horScrollControllerMap[index] ?? ScrollController();
-          _horScrollControllerMap.putIfAbsent(index, () => horScrollController);
-          horScrollController.addListener(() {
-            getHorScrollListener(horScrollController);
-          });
-          if (index == 0) {
-            return Row(
-              children: [
-                _buildItem(
-                  columns.first.text,
-                  isTitle: true,
-                ),
-                Flexible(
-                  child: SingleChildScrollView(
-                    controller: horScrollController,
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: columns
-                          .sublist(1, columns.length)
-                          .map((e) => _buildItem(
-                                e.text,
-                                isTitle: true,
-                              ))
-                          .toList(),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }
-          return Row(
-            children: [
-              _buildItem(records[index - 1][columns.first.id]?.toString() ?? ""),
-              Flexible(
-                child: SingleChildScrollView(
-                  controller: horScrollController,
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: columns
-                        .sublist(1, columns.length)
-                        .map((c) => _buildItem(records[index - 1][c.id]?.toString() ?? ""))
-                        .toList(),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildItem(String text, {isTitle = false}) {
-    return SizedBox(
-      width: 180,
-      height: 60,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          text,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: isTitle ? FontWeight.w700 : FontWeight.w400,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void updateCurrentMenu(MenuSection menuSection) {
-    if (_currentMenuNotifier.value != menuSection) {
-      _currentMenuNotifier.value = menuSection;
-      _employeeBloc.getEmployees(menuSection);
-    }
-  }
-
-  void getHorScrollListener(ScrollController controller) {
-    for (var c in _horScrollControllerMap.values) {
-      if (c != controller && c.hasClients && c.offset != controller.offset) {
-        c.jumpTo(controller.offset);
-      }
-    }
   }
 }

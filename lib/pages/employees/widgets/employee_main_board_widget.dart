@@ -4,6 +4,7 @@ import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
 
@@ -26,7 +27,7 @@ class _EmployeeMainBoardWidgetState extends State<EmployeeMainBoardWidget> {
 
   @override
   void initState() {
-    _employeeBloc = EmployeeBloc();
+    _employeeBloc = getIt<EmployeeBloc>();
     _employeeBloc.getNavigation();
     super.initState();
   }
