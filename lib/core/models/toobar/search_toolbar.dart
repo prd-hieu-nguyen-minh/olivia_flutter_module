@@ -5,8 +5,9 @@ class SearchToolbar extends Toolbar {
   @override
   Widget getWidget() {
     return Container(
+      height: 42,
       width: 200,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.black26,

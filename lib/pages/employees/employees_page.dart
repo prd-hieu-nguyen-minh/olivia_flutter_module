@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
-import 'package:olivia_flutter_module/core/models/candidates/column.dart'
-    as Col;
+import 'package:olivia_flutter_module/core/models/candidates/column.dart' as Col;
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/core/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
@@ -22,24 +22,30 @@ class EmployeesPage extends StatefulWidget {
 
 class _EmployeesPageState extends State<EmployeesPage> {
   late EmployeeBloc _employeeBloc;
-  late ValueNotifier<MenuSection?> currentMenuNotifier;
+  late ValueNotifier<MenuSection?> _currentMenuNotifier;
 
   @override
   void initState() {
     _employeeBloc = EmployeeBloc();
-    currentMenuNotifier = ValueNotifier(null);
+    _currentMenuNotifier = ValueNotifier(null);
+    _employeeBloc.getNavigation();
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    _employeeBloc.getNavigation();
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
-    currentMenuNotifier.dispose();
+    _currentMenuNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _employeeBloc.getNavigation();
     return BaseBoardMainPage(
       title: _buildTitle(),
       mainBoard: _buildMainBoard(),
@@ -73,14 +79,18 @@ class _EmployeesPageState extends State<EmployeesPage> {
   Widget _buildMainBoard() {
     return BlocConsumer(
       bloc: _employeeBloc,
+      listenWhen: (previous, current) {
+        return current is GetNavigationEmployeeSuccess;
+      },
       listener: (context, state) {
         if (state is GetNavigationEmployeeSuccess) {
           if (state.menuSections.isNotEmpty) {
-            var currentMenuSection = state.menuSections.first;
-            currentMenuNotifier.value = currentMenuSection;
-            _employeeBloc.getEmployees(currentMenuSection);
+            updateCurrentMenu(state.menuSections.first);
           }
         }
+      },
+      buildWhen: (previous, current) {
+        return _currentMenuNotifier.value == null || current is GetNavigationEmployeeSuccess;
       },
       builder: (context, state) {
         if (state is InProgressState) {
@@ -90,7 +100,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
         }
         if (state is GetNavigationEmployeeSuccess) {
           return ValueListenableBuilder<MenuSection?>(
-            valueListenable: currentMenuNotifier,
+            valueListenable: _currentMenuNotifier,
             builder: (_, currentMenu, __) {
               return ListView.builder(
                 itemCount: state.menuSections.length,
@@ -99,9 +109,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                   return EmployeeSectionWidget(
                     menuSection: menuSection,
                     isCurrent: menuSection == currentMenu,
-                    onSelected: (menuSection) {
-                      currentMenuNotifier.value = menuSection;
-                    },
+                    onSelected: updateCurrentMenu,
                   );
                 },
               );
@@ -117,15 +125,18 @@ class _EmployeesPageState extends State<EmployeesPage> {
     return Padding(
       padding: const EdgeInsets.all(24),
       child: ValueListenableBuilder(
-        valueListenable: currentMenuNotifier,
+        valueListenable: _currentMenuNotifier,
         builder: (_, value, __) {
+          if (value == null) {
+            return const SizedBox.shrink();
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Text(
-                  value?.name ?? "",
+                  value.name,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -136,7 +147,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: _buildToolBar(
-                  employeeCount: value?.count ?? 0,
+                  employeeCount: value.count,
                 ),
               ),
               const SizedBox(height: 24),
@@ -184,6 +195,11 @@ class _EmployeesPageState extends State<EmployeesPage> {
     return BlocBuilder(
       bloc: _employeeBloc,
       builder: (context, state) {
+        if (state is InProgressState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         if (state is GetEmployeesSuccess) {
           return _buildListView(
               columns: state.response.getColumns(),
@@ -198,9 +214,6 @@ class _EmployeesPageState extends State<EmployeesPage> {
     required List<Col.Column> columns,
     required List<Map<String, dynamic>> records,
   }) {
-    if (columns.isEmpty) {
-      return const SizedBox.shrink();
-    }
     var horizontalScrollBar = ScrollController();
     var verticalScrollBar = ScrollController();
     return Scrollbar(
@@ -211,12 +224,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
         child: Column(
           children: [
             Row(
-              children: columns
-                  .map((e) => _buildItem(
-                        e.text,
-                        isTitle: true,
-                      ))
-                  .toList(),
+              children: columns.map((e) => _buildItem(e.text, isTitle: true)).toList(),
             ),
             Flexible(
               child: Scrollbar(
@@ -226,8 +234,8 @@ class _EmployeesPageState extends State<EmployeesPage> {
                   child: Column(
                     children: records.map((map) {
                       return Row(
-                        children: (columns)
-                            .map((column) => _buildItem(map[column.id] ?? ""))
+                        children: columns
+                            .map((column) => _buildItem(map[column.id]?.toString() ?? ""))
                             .toList(),
                       );
                     }).toList(),
@@ -258,5 +266,12 @@ class _EmployeesPageState extends State<EmployeesPage> {
         ),
       ),
     );
+  }
+
+  void updateCurrentMenu(MenuSection menuSection) {
+    if (_currentMenuNotifier.value != menuSection) {
+      _currentMenuNotifier.value = menuSection;
+      _employeeBloc.getEmployees(menuSection);
+    }
   }
 }

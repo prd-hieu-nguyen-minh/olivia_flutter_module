@@ -5,6 +5,8 @@ import 'package:olivia_flutter_module/data/sources/remote/service/dio_client.dar
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/src/src.dart';
 
+const EMPLOYEE_SETTING_URL = "settings/employees";
+
 abstract class EmployeeRemoteDataSource {
   Future<List<MenuSection>> getNavigation();
 
@@ -22,7 +24,7 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
       (key, value) => MapEntry(key.toString(), value.toString()),
     );
     final response = await _dioService.get(
-      'settings/employees/navigation',
+      '$EMPLOYEE_SETTING_URL/navigation',
       options: Options(
         headers: headers,
       ),
@@ -38,8 +40,8 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
       (key, value) => MapEntry(key.toString(), value.toString()),
     );
     final response = await _dioService.post(
-      'settings/employees/search',
-      queryParameters: params,
+      '$EMPLOYEE_SETTING_URL/search',
+      data: params,
       options: Options(
         headers: headers,
       ),

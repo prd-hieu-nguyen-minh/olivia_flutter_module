@@ -23,7 +23,7 @@ class EmployeeResponse {
     return [
       Column(
         id: "name",
-        text: "name",
+        text: "Name",
       ),
       Column(
         id: "position_title",

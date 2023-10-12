@@ -47,7 +47,7 @@ class Employee {
 
   Map<String, dynamic> get map => {
         "name": name,
-        "job_title": jobTitle,
+        "position_title": jobTitle,
         "user_role": userRole,
         "work_email": workEmail,
         "work_country": workCountry,
