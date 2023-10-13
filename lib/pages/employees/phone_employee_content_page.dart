@@ -21,8 +21,7 @@ class PhoneEmployeeContentPage extends StatefulWidget {
   });
 
   @override
-  State<PhoneEmployeeContentPage> createState() =>
-      _PhoneEmployeeContentPageState();
+  State<PhoneEmployeeContentPage> createState() => _PhoneEmployeeContentPageState();
 }
 
 class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
@@ -89,8 +88,8 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
         }
         if (state is GetEmployeesSuccess) {
           return MainListView(
-            columns: state.response.getColumns(),
-            records: state.response.employees.map((e) => e.map).toList(),
+            columns: state.columns,
+            records: state.employees.map((e) => e.map).toList(),
           );
         }
         return const SizedBox.shrink();

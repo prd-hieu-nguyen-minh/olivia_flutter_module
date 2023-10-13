@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
+import 'package:olivia_flutter_module/core/mixins/loading_mixin.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/core/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/core/models/toobar/icon_toolbar.dart';
@@ -12,7 +13,6 @@ import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_boar
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class EmployeesPage extends StatefulWidget {
   State<EmployeesPage> createState() => _EmployeesPageState();
 }
 
-class _EmployeesPageState extends State<EmployeesPage> {
+class _EmployeesPageState extends State<EmployeesPage> with LoadingMixin {
   late EmployeeBloc _employeeBloc;
   late ValueNotifier<MenuSection?> _currentMenuNotifier;
 
@@ -148,17 +148,27 @@ class _EmployeesPageState extends State<EmployeesPage> {
   }
 
   Widget _buildEmployeeListView() {
-    return BlocBuilder(
+    return BlocConsumer(
       bloc: _employeeBloc,
-      builder: (context, state) {
+      listener: (context, state) {
         if (state is InProgressState) {
-          return const MainLoadingIndicator();
+          showLoading();
         }
+      },
+      buildWhen: (_, state) => state is GetEmployeesSuccess,
+      builder: (context, state) {
         if (state is GetEmployeesSuccess) {
+          hideLoading();
           return MainListView(
-            columns: state.response.getColumns(),
-            records: state.response.employees.map((e) => e.map).toList(),
+            key: UniqueKey(),
+            columns: state.columns,
+            records: state.employees.map((e) => e.map).toList(),
             pingCount: 1,
+            isHasNext: state.isHasNext,
+            onLast: () {
+              var currentPage = state.currentParams["page"] ?? 1;
+              _employeeBloc.getMoreEmployees(state.currentParams..["page"] = currentPage + 1);
+            },
           );
         }
         return const SizedBox.shrink();
