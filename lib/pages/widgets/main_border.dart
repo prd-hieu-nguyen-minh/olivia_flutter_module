@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MainBorderWidget extends StatelessWidget {
+class MainBorder extends StatelessWidget {
   final Widget child;
   final double radius;
 
-  const MainBorderWidget({
+  const MainBorder({
     super.key,
     required this.child,
     this.radius = 24,

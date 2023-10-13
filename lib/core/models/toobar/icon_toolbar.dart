@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/models/toobar/toolbar.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_border_widget.dart';
+import 'package:olivia_flutter_module/pages/widgets/main_border.dart';
 
 class IconToolbar extends Toolbar {
   final IconData icon;
@@ -11,8 +11,8 @@ class IconToolbar extends Toolbar {
 
   @override
   Widget getWidget() {
-    return MainBorderWidget(
-      child: MainBorderWidget(
+    return MainBorder(
+      child: MainBorder(
         radius: 4,
         child: Padding(
           padding: const EdgeInsets.all(8),

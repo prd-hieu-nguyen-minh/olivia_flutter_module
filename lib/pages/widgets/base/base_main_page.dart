@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_border_widget.dart';
+
+import '../main_border.dart';
 
 class BaseMainPage extends StatelessWidget {
   final Widget board;
@@ -21,7 +22,7 @@ class BaseMainPage extends StatelessWidget {
         children: [
           SizedBox(
             width: 300,
-            child: MainBorderWidget(
+            child: MainBorder(
               child: board,
             ),
           ),
@@ -29,7 +30,7 @@ class BaseMainPage extends StatelessWidget {
           Expanded(
             child: SizedBox(
               height: double.infinity,
-              child: MainBorderWidget(
+              child: MainBorder(
                 child: content,
               ),
             ),

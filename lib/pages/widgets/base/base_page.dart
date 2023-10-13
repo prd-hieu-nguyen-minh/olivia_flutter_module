@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class BasePhonePage extends StatelessWidget {
+class BasePage extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final Widget body;
 
-  const BasePhonePage({
+  const BasePage({
     super.key,
     required this.body,
     this.appBar,

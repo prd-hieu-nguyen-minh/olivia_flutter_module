@@ -1,0 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/resources/app_colors.dart';
+
+class NormalText16 extends StatelessWidget {
+  final String text;
+
+  const NormalText16(this.text, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        color: AppColors.colorText,
+      ),
+    );
+  }
+}
