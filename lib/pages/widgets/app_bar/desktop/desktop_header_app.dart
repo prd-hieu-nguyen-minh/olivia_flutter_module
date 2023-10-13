@@ -6,7 +6,12 @@ import 'package:olivia_flutter_module/pages/widgets/main_border.dart';
 import 'package:olivia_flutter_module/pages/widgets/text/normal_text_16.dart';
 
 class DesktopHeaderApp extends StatelessWidget {
-  const DesktopHeaderApp({super.key});
+  final void Function()? onAllAppTap;
+
+  const DesktopHeaderApp({
+    super.key,
+    this.onAllAppTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +45,21 @@ class DesktopHeaderApp extends StatelessWidget {
   }
 
   Widget _buildAllAppIcon() {
-    return MainBorder(
-      radius: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              AppImages.icAllApp,
-            ),
-            const SizedBox(width: 4),
-            const NormalText16("All Apps"),
-          ],
+    return InkWell(
+      onTap: () => onAllAppTap?.call(),
+      child: MainBorder(
+        radius: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                AppImages.icAllApp,
+              ),
+              const SizedBox(width: 4),
+              const NormalText16("All Apps"),
+            ],
+          ),
         ),
       ),
     );
