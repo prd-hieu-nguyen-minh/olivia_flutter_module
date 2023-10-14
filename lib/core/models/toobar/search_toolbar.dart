@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/models/toobar/toolbar.dart';
 
 class SearchToolbar extends Toolbar {
+  final TextFormField textFormField;
+
+  SearchToolbar({
+    required this.textFormField,
+  });
+
   @override
   Widget getWidget() {
     return Container(
@@ -15,27 +21,16 @@ class SearchToolbar extends Toolbar {
         ),
         borderRadius: const BorderRadius.all(Radius.circular(4)),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.search,
             color: Colors.black26,
             size: 20,
           ),
-          SizedBox(width: 4),
+          const SizedBox(width: 4),
           Expanded(
-            child: TextField(
-              maxLines: 1,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: "Search",
-                hintStyle: TextStyle(
-                  color: Colors.black38,
-                  fontSize: 14,
-                ),
-                border: InputBorder.none,
-              ),
-            ),
+            child: textFormField,
           ),
         ],
       ),
