@@ -26,6 +26,10 @@ class SampleCallNativeFlutter {
     return companyId?.toString();
   }
 
+  static Future<bool?> showAllApp() async {
+    return await _channel.invokeMethod("show_all_app");
+  }
+
   static Future showMenuMore(String menuJson) async {
     await _menuChannel.invokeMethod('show_more', menuJson);
   }

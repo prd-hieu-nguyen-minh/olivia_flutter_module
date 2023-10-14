@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/main.dart';
 import 'package:olivia_flutter_module/pages/employees/employees_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/app_bar/desktop/desktop_header_app.dart';
 import 'package:olivia_flutter_module/pages/widgets/app_bar/desktop/desktop_header_toolbar.dart';
@@ -9,18 +10,24 @@ class DesktopEmployeeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BasePage(
+    return BasePage(
       body: Column(
         children: [
-          DesktopHeaderApp(),
-          DesktopHeaderToolbar(
+          DesktopHeaderApp(
+            onAllAppTap: showAllAppPopup,
+          ),
+          const DesktopHeaderToolbar(
             title: "Employees",
           ),
-          Expanded(
+          const Expanded(
             child: EmployeesPage(),
           ),
         ],
       ),
     );
+  }
+
+  void showAllAppPopup() async {
+    await SampleCallNativeFlutter.showAllApp();
   }
 }

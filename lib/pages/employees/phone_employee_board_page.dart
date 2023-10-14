@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/main.dart';
 import 'package:olivia_flutter_module/pages/employees/phone_employee_content_page.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/app_bar/all_app_bar.dart';
@@ -16,13 +17,18 @@ class _PhoneEmployeeBoardPageState extends State<PhoneEmployeeBoardPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      appBar: const AllAppBar(
+      appBar: AllAppBar(
         title: 'Employees',
+        onAllAppTap: gotoAllApp,
       ),
       body: EmployeeMainBoardWidget(
         onMenuSelected: goToContent,
       ),
     );
+  }
+
+  void gotoAllApp() async {
+    await SampleCallNativeFlutter.showAllApp();
   }
 
   void goToContent(MenuSection menuSection) {
