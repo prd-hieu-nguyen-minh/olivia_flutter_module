@@ -6,6 +6,7 @@ import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
+import 'package:olivia_flutter_module/pages/widgets/app_bar/base/base_app_bar.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
@@ -21,8 +22,7 @@ class PhoneEmployeeContentPage extends StatefulWidget {
   });
 
   @override
-  State<PhoneEmployeeContentPage> createState() =>
-      _PhoneEmployeeContentPageState();
+  State<PhoneEmployeeContentPage> createState() => _PhoneEmployeeContentPageState();
 }
 
 class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
@@ -38,9 +38,8 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: InkWell(
+      appBar: BaseAppBar(
+        prefix: InkWell(
           onTap: () => Navigator.of(context).pop(),
           child: const SizedBox.square(
             dimension: 40,
@@ -51,28 +50,18 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
             ),
           ),
         ),
-        title: Column(
+        content: Column(
           children: [
             const DescriptionText("Employees"),
             const SizedBox(height: 4),
             TitleText(widget.menuSection.name),
           ],
         ),
-        elevation: 0,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              Icons.filter_list,
-              color: AppColors.colorText,
-            ),
-          ),
-        ],
-        centerTitle: true,
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Divider(
-            color: AppColors.colorLineBar,
+        suffix: const Padding(
+          padding: EdgeInsets.only(right: 16),
+          child: Icon(
+            Icons.filter_list,
+            color: AppColors.colorText,
           ),
         ),
       ),

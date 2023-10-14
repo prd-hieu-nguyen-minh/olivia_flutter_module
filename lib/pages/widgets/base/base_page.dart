@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BasePage extends StatelessWidget {
-  final PreferredSizeWidget? appBar;
+  final Widget? appBar;
   final Widget body;
 
   const BasePage({
@@ -12,10 +12,19 @@ class BasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appBar = this.appBar;
     return Scaffold(
-      appBar: appBar,
       backgroundColor: Colors.white,
-      body: body,
+      body: SafeArea(
+        child: Column(
+          children: [
+            if (appBar != null) appBar,
+            Expanded(
+              child: body,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
