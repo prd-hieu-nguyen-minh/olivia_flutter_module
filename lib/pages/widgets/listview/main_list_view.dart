@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/enums/sort_by.dart';
 import 'package:olivia_flutter_module/core/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_item.dart';
+import 'package:olivia_flutter_module/pages/widgets/listview/main_list_title.dart';
 
 class MainListView extends StatefulWidget {
   final List<cl.Column> columns;
   final List<Map<String, dynamic>> records;
   final int pingCount;
+  final void Function(cl.Column column, SortBy? sortBy)? onTitleTap;
 
   const MainListView({
     Key? key,
     required this.columns,
     required this.records,
     this.pingCount = 0,
+    this.onTitleTap,
   }) : super(key: key);
 
   @override
@@ -52,26 +56,25 @@ class _MainListViewState extends State<MainListView> {
           horScrollController.addListener(() {
             getHorScrollListener(horScrollController);
           });
-          var isTitle = index == 0;
+          if (index == 0) {
+            return _buildRecordRow(
+              columns: widget.columns,
+              pingCount: widget.pingCount,
+              builder: (column) => MainListTitle(
+                column: column,
+                onTap: (sortBy) {
+                  widget.onTitleTap?.call(column, sortBy);
+                },
+              ),
+              horScrollController: horScrollController,
+            );
+          }
           return _buildRecordRow(
-            pingChildren: widget.columns
-                .sublist(0, widget.pingCount)
-                .map((column) => MainListItem(
-                      text: isTitle
-                          ? column.text
-                          : widget.records[index - 1][column.id]?.toString() ?? "",
-                      isTitle: isTitle,
-                    ))
-                .toList(),
-            scrollChildren: widget.columns
-                .sublist(widget.pingCount, widget.columns.length)
-                .map((column) => MainListItem(
-                      text: isTitle
-                          ? column.text
-                          : widget.records[index - 1][column.id]?.toString() ?? "",
-                      isTitle: isTitle,
-                    ))
-                .toList(),
+            columns: widget.columns,
+            pingCount: widget.pingCount,
+            builder: (column) => MainListItem(
+              text: widget.records[index - 1][column.id]?.toString() ?? "",
+            ),
             horScrollController: horScrollController,
           );
         },
@@ -80,21 +83,22 @@ class _MainListViewState extends State<MainListView> {
   }
 
   Widget _buildRecordRow({
-    required List<Widget> pingChildren,
-    required List<Widget> scrollChildren,
+    required List<cl.Column> columns,
+    required int pingCount,
+    required Widget Function(cl.Column column) builder,
     required ScrollController horScrollController,
   }) {
     return Row(
       children: [
         Row(
-          children: pingChildren,
+          children: columns.sublist(0, pingCount).map((e) => builder(e)).toList(),
         ),
         Flexible(
           child: SingleChildScrollView(
             controller: horScrollController,
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: scrollChildren,
+              children: columns.sublist(pingCount, columns.length).map((e) => builder(e)).toList(),
             ),
           ),
         ),

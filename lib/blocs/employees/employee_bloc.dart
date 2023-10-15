@@ -1,5 +1,6 @@
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
+import 'package:olivia_flutter_module/core/models/candidates/column.dart';
 import 'package:olivia_flutter_module/core/models/menu_section.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/repositories/employee_repository.dart';
@@ -23,6 +24,7 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
     String keyword = "",
     int page = 1,
     int perPage = 30,
+    Column? column,
   }) {
     single(
       () => _employeeRepository.getEmployees({
@@ -31,10 +33,14 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
         "keyword": keyword,
         "page": page,
         "per_page": perPage,
+        "sort": column?.sortMap ?? {},
       }),
-      onSuccess: (data) => GetEmployeesSuccess(
-        response: data,
-      ),
+      onSuccess: (data) {
+        data.column = column;
+        return GetEmployeesSuccess(
+          response: data,
+        );
+      },
     );
   }
 }

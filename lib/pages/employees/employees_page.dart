@@ -198,6 +198,13 @@ class _EmployeesPageState extends State<EmployeesPage> {
             columns: state.response.getColumns(),
             records: state.response.employees.map((e) => e.map).toList(),
             pingCount: 1,
+            onTitleTap: (column, sortBy) {
+              column.sortBy = sortBy;
+              _employeeBloc.getEmployees(
+                _currentMenuNotifier.value!,
+                column: column,
+              );
+            },
           );
         }
         return const SizedBox.shrink();

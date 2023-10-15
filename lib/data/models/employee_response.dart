@@ -3,9 +3,11 @@ import 'package:olivia_flutter_module/core/models/employees/employee.dart';
 
 class EmployeeResponse {
   final List<Employee> employees;
+  Column? column;
 
   EmployeeResponse({
     required this.employees,
+    this.column,
   });
 
   factory EmployeeResponse.fromJson(Map? json) {
@@ -20,7 +22,7 @@ class EmployeeResponse {
   }
 
   List<Column> getColumns() {
-    return [
+    var result = [
       Column(
         id: "name",
         text: "Name",
@@ -46,5 +48,14 @@ class EmployeeResponse {
         text: "Preferred Language",
       ),
     ];
+    if (column?.sortBy != null) {
+      for (var cl in result) {
+        if (cl.id == column?.id) {
+          cl.sortBy = column?.sortBy;
+          return result;
+        }
+      }
+    }
+    return result;
   }
 }
