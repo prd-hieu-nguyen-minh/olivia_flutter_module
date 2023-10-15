@@ -1,5 +1,5 @@
-import 'package:olivia_flutter_module/core/models/candidates/column.dart';
-import 'package:olivia_flutter_module/core/models/employees/employee.dart';
+import 'package:olivia_flutter_module/data/models/candidates/column.dart';
+import 'package:olivia_flutter_module/data/models/employees/employee.dart';
 
 class EmployeeResponse {
   final List<Employee> employees;

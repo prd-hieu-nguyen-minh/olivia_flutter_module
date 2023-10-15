@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:olivia_flutter_module/core/common/constants/url_constant.dart';
 import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
-import 'package:olivia_flutter_module/data/models/candidate_response.dart';
+import 'package:olivia_flutter_module/data/models/candidates/candidate_response.dart';
+import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
 
 class ApiServices {

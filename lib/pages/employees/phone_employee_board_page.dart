@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
 import 'package:olivia_flutter_module/pages/employees/phone_employee_content_page.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';

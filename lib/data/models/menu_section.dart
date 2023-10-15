@@ -1,4 +1,4 @@
-import 'package:olivia_flutter_module/core/enums/menu_type.dart';
+import 'package:olivia_flutter_module/data/enums/menu_type.dart';
 
 class MenuSection {
   final int id;

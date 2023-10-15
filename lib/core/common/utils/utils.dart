@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:olivia_flutter_module/core/enums/menu_type.dart';
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/data/enums/menu_type.dart';
+import 'package:olivia_flutter_module/data/models/menu_section.dart';
 
 class Utils {
   static MenuSection? parseMenuSectionFromJson(String str) {

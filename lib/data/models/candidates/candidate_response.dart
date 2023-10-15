@@ -1,5 +1,5 @@
-import 'package:olivia_flutter_module/core/models/candidates/candidate.dart';
-import 'package:olivia_flutter_module/core/models/candidates/column.dart';
+import 'package:olivia_flutter_module/data/models/candidates/candidate.dart';
+import 'package:olivia_flutter_module/data/models/candidates/column.dart';
 
 class CandidateResponse {
   final List<Candidate> candidates;

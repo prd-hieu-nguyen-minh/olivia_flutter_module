@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/common/utils/utils.dart';
-import 'package:olivia_flutter_module/core/enums/menu_type.dart';
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/data/enums/menu_type.dart';
+import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
 
 class MenuSectionWidget extends StatelessWidget {

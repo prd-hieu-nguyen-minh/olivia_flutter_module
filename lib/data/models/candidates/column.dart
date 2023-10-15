@@ -1,4 +1,4 @@
-import 'package:olivia_flutter_module/core/enums/sort_by.dart';
+import 'package:olivia_flutter_module/data/enums/sort_by.dart';
 
 class Column {
   final String id;

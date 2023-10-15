@@ -1,4 +1,4 @@
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
+import 'package:olivia_flutter_module/data/models/menu_section.dart';
 
 class AppHelpers {
   static String menuJsonStr = '''

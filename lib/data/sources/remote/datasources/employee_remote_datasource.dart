@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:olivia_flutter_module/core/models/menu_section.dart';
-import 'package:olivia_flutter_module/data/models/employee_response.dart';
+import 'package:olivia_flutter_module/data/models/employees/employee_response.dart';
+import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/data/sources/remote/service/dio_client.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/src/src.dart';

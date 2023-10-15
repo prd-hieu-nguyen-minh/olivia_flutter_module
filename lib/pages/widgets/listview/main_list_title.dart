@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/core/enums/sort_by.dart';
-import 'package:olivia_flutter_module/core/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
+import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
+import 'package:olivia_flutter_module/data/enums/sort_by.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_item.dart';
 
 class MainListTitle extends StatelessWidget {
