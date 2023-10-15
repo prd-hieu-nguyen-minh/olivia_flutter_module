@@ -13,6 +13,7 @@ import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_boar
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
+import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -190,9 +191,13 @@ class _EmployeesPageState extends State<EmployeesPage> {
         }
       },
       buildWhen: (previous, current) {
-        return current is GetEmployeesSuccess;
+        return current is GetEmployeesSuccess ||
+            current is InProgressState && widget.loadingNotifier == null;
       },
       builder: (context, state) {
+        if (state is InProgressState) {
+          return const MainLoadingIndicator();
+        }
         if (state is GetEmployeesSuccess) {
           return MainListView(
             columns: state.response.getColumns(),

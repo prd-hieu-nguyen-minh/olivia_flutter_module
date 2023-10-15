@@ -23,7 +23,6 @@ class MainListItem extends StatelessWidget {
             ? _buildText()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _buildText(),
                   const SizedBox(width: 8),

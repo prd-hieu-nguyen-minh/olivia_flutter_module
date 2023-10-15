@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
+import 'package:olivia_flutter_module/core/resources/app_images.dart';
 import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/data/enums/sort_by.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_item.dart';
@@ -35,14 +37,15 @@ class MainListTitle extends StatelessWidget {
         text: column.text,
         isTitle: true,
         suffix: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildIcon(
-              Icons.arrow_drop_up_outlined,
+              isDown: false,
               isSelect: column.sortBy == SortBy.asc,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 3),
             _buildIcon(
-              Icons.arrow_drop_down_outlined,
+              isDown: true,
               isSelect: column.sortBy == SortBy.desc,
             ),
           ],
@@ -51,14 +54,21 @@ class MainListTitle extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(
-    IconData iconData, {
+  Widget _buildIcon({
+    required bool isDown,
     required bool isSelect,
   }) {
-    return Icon(
-      iconData,
-      color: isSelect ? AppColors.colorText : AppColors.colorDescription,
-      size: 20,
+    return RotatedBox(
+      quarterTurns: isDown ? 0 : 90,
+      child: SvgPicture.asset(
+        AppImages.icArrowDown,
+        colorFilter: ColorFilter.mode(
+          isSelect ? AppColors.colorText : AppColors.colorDescription,
+          BlendMode.srcIn,
+        ),
+        height: 6,
+        width: 6,
+      ),
     );
   }
 }
