@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/resources/app_colors.dart';
 
 class MainListItem extends StatelessWidget {
   final String text;
@@ -17,18 +18,30 @@ class MainListItem extends StatelessWidget {
     return SizedBox(
       width: 250,
       height: 60,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: suffix == null
-            ? _buildText()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildText(),
-                  const SizedBox(width: 8),
-                  suffix!,
-                ],
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              alignment: Alignment.centerLeft,
+              child: suffix == null
+                  ? _buildText()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildText(),
+                        const SizedBox(width: 8),
+                        suffix!,
+                      ],
+                    ),
+            ),
+          ),
+          const Divider(
+            color: AppColors.colorDescription,
+            height: 1,
+          ),
+        ],
       ),
     );
   }
@@ -38,6 +51,7 @@ class MainListItem extends StatelessWidget {
       text,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: isTitle ? FontWeight.w700 : FontWeight.w400,
         fontSize: 16,

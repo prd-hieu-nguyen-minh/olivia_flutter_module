@@ -4,6 +4,8 @@ import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/core/common/utils/debouncer.dart';
+import 'package:olivia_flutter_module/core/resources/app_colors.dart';
+import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/data/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/data/models/toobar/icon_toolbar.dart';
@@ -14,6 +16,7 @@ import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.da
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
+import 'package:olivia_flutter_module/pages/widgets/no_data_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
@@ -32,18 +35,21 @@ class _EmployeesPageState extends State<EmployeesPage> {
   late EmployeeBloc _employeeBloc;
   late ValueNotifier<MenuSection?> _currentMenuNotifier;
   late DeBouncer _searchDeBouncer;
+  late TextEditingController _searchTextController;
 
   @override
   void initState() {
     _employeeBloc = getIt<EmployeeBloc>();
     _currentMenuNotifier = ValueNotifier(null);
     _searchDeBouncer = DeBouncer();
+    _searchTextController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     _currentMenuNotifier.dispose();
+    _searchTextController.dispose();
     super.dispose();
   }
 
@@ -93,7 +99,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
           if (value == null) {
             return const SizedBox.shrink();
           }
-          _employeeBloc.getEmployees(value);
+          getEmployees();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -159,6 +165,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
 
   TextFormField _buildSearchTextField() {
     return TextFormField(
+      controller: _searchTextController,
       maxLines: 1,
       decoration: const InputDecoration(
         isDense: true,
@@ -171,10 +178,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
       ),
       onChanged: (value) {
         _searchDeBouncer.run(() {
-          var currentMenu = _currentMenuNotifier.value;
-          if (currentMenu != null) {
-            _employeeBloc.getEmployees(currentMenu, keyword: value);
-          }
+          getEmployees();
         });
       },
     );
@@ -205,15 +209,32 @@ class _EmployeesPageState extends State<EmployeesPage> {
             pingCount: 1,
             onTitleTap: (column, sortBy) {
               column.sortBy = sortBy;
-              _employeeBloc.getEmployees(
-                _currentMenuNotifier.value!,
-                column: column,
-              );
+              getEmployees(column);
             },
+            noDataWidget: const NoDataWidget(
+              icon: Icon(
+                Icons.person,
+                color: AppColors.colorDescription,
+                size: 60,
+              ),
+              text: "No employees found.",
+            ),
           );
         }
         return const SizedBox.shrink();
       },
+    );
+  }
+
+  void getEmployees([cl.Column? column]) {
+    var currentMenu = _currentMenuNotifier.value;
+    if (currentMenu == null) {
+      return;
+    }
+    _employeeBloc.getEmployees(
+      currentMenu,
+      keyword: _searchTextController.text,
+      column: column,
     );
   }
 }

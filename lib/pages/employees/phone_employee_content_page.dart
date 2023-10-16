@@ -10,6 +10,7 @@ import 'package:olivia_flutter_module/pages/widgets/app_bar/base/base_app_bar.da
 import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
 import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
+import 'package:olivia_flutter_module/pages/widgets/no_data_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/text/description_text.dart';
 import 'package:olivia_flutter_module/pages/widgets/text/title_text.dart';
 
@@ -22,7 +23,8 @@ class PhoneEmployeeContentPage extends StatefulWidget {
   });
 
   @override
-  State<PhoneEmployeeContentPage> createState() => _PhoneEmployeeContentPageState();
+  State<PhoneEmployeeContentPage> createState() =>
+      _PhoneEmployeeContentPageState();
 }
 
 class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
@@ -80,6 +82,14 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
           return MainListView(
             columns: state.response.getColumns(),
             records: state.response.employees.map((e) => e.map).toList(),
+            noDataWidget: const NoDataWidget(
+              icon: Icon(
+                Icons.person,
+                size: 70,
+                color: AppColors.colorDescription,
+              ),
+              text: "No employees found.",
+            ),
           );
         }
         return const SizedBox.shrink();
