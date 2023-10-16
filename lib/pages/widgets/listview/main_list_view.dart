@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/extensions/bool_extension.dart';
 import 'package:olivia_flutter_module/data/enums/sort_by.dart';
 import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_item.dart';
@@ -9,6 +10,8 @@ class MainListView extends StatefulWidget {
   final List<Map<String, dynamic>> records;
   final int pingCount;
   final Widget noDataWidget;
+  final bool isHasNext;
+  final void Function()? onLoadMore;
   final void Function(cl.Column column, SortBy? sortBy)? onTitleTap;
 
   const MainListView({
@@ -17,6 +20,8 @@ class MainListView extends StatefulWidget {
     required this.records,
     this.pingCount = 0,
     this.onTitleTap,
+    this.isHasNext = false,
+    this.onLoadMore,
     required this.noDataWidget,
   }) : super(key: key);
 
@@ -65,9 +70,13 @@ class _MainListViewState extends State<MainListView> {
                   controller: _lvScrollController,
                   child: ListView.builder(
                     controller: _lvScrollController,
-                    itemCount: widget.records.length,
+                    itemCount: widget.records.length + widget.isHasNext.toInt(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
+                      if (index == widget.records.length) {
+                        widget.onLoadMore?.call();
+                        return const SizedBox(height: 2);
+                      }
                       return _buildRecordRow(
                         columns: widget.columns,
                         pingCount: widget.pingCount,

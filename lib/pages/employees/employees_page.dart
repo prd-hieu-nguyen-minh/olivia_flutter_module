@@ -13,18 +13,15 @@ import 'package:olivia_flutter_module/data/models/toobar/search_toolbar.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
+import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
 import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
 import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
 import 'package:olivia_flutter_module/pages/widgets/no_data_widget.dart';
 import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
-  final ValueNotifier<bool>? loadingNotifier;
-
   const EmployeesPage({
     super.key,
-    this.loadingNotifier,
   });
 
   @override
@@ -36,6 +33,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   late ValueNotifier<MenuSection?> _currentMenuNotifier;
   late DeBouncer _searchDeBouncer;
   late TextEditingController _searchTextController;
+  late ValueNotifier<bool> _loadingNotifier;
 
   @override
   void initState() {
@@ -43,6 +41,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
     _currentMenuNotifier = ValueNotifier(null);
     _searchDeBouncer = DeBouncer();
     _searchTextController = TextEditingController();
+    _loadingNotifier = ValueNotifier(false);
     super.initState();
   }
 
@@ -50,6 +49,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   void dispose() {
     _currentMenuNotifier.dispose();
     _searchTextController.dispose();
+    _loadingNotifier.dispose();
     super.dispose();
   }
 
@@ -62,7 +62,10 @@ class _EmployeesPageState extends State<EmployeesPage> {
       ),
       content: ScrollConfiguration(
         behavior: DisableScrollGrowBehavior(),
-        child: _buildContent(),
+        child: BasePage(
+          body: _buildContent(),
+          loadingNotifier: _loadingNotifier,
+        ),
       ),
     );
   }
@@ -189,28 +192,21 @@ class _EmployeesPageState extends State<EmployeesPage> {
       bloc: _employeeBloc,
       listener: (context, state) {
         if (state is InProgressState) {
-          widget.loadingNotifier?.value = true;
+          _loadingNotifier.value = true;
         } else {
-          widget.loadingNotifier?.value = false;
+          _loadingNotifier.value = false;
         }
       },
       buildWhen: (previous, current) {
-        return current is GetEmployeesSuccess ||
-            current is InProgressState && widget.loadingNotifier == null;
+        return current is GetEmployeesSuccess;
       },
       builder: (context, state) {
-        if (state is InProgressState) {
-          return const MainLoadingIndicator();
-        }
         if (state is GetEmployeesSuccess) {
           return MainListView(
-            columns: state.response.getColumns(),
-            records: state.response.employees.map((e) => e.map).toList(),
+            columns: state.columns,
+            records: state.employees.map((e) => e.map).toList(),
             pingCount: 1,
-            onTitleTap: (column, sortBy) {
-              column.sortBy = sortBy;
-              getEmployees(column);
-            },
+            isHasNext: state.isHasNext,
             noDataWidget: const NoDataWidget(
               icon: Icon(
                 Icons.person,
@@ -219,6 +215,18 @@ class _EmployeesPageState extends State<EmployeesPage> {
               ),
               text: "No employees found.",
             ),
+            onTitleTap: (column, sortBy) {
+              column.sortBy = sortBy;
+              getEmployees(
+                sortColumn: column,
+              );
+            },
+            onLoadMore: () {
+              getEmployees(
+                sortColumn: state.sortColumn,
+                page: state.page + 1,
+              );
+            },
           );
         }
         return const SizedBox.shrink();
@@ -226,7 +234,10 @@ class _EmployeesPageState extends State<EmployeesPage> {
     );
   }
 
-  void getEmployees([cl.Column? column]) {
+  void getEmployees({
+    cl.Column? sortColumn,
+    int page = 1,
+  }) {
     var currentMenu = _currentMenuNotifier.value;
     if (currentMenu == null) {
       return;
@@ -234,7 +245,9 @@ class _EmployeesPageState extends State<EmployeesPage> {
     _employeeBloc.getEmployees(
       currentMenu,
       keyword: _searchTextController.text,
-      column: column,
+      sortColumn: sortColumn,
+      page: page,
+      isRefresh: page == 1,
     );
   }
 }

@@ -39,10 +39,8 @@ class _DesktopEmployeeScreenState extends State<DesktopEmployeeScreen> {
           const DesktopHeaderToolbar(
             title: "Employees",
           ),
-          Expanded(
-            child: EmployeesPage(
-              loadingNotifier: loadingNotifier,
-            ),
+          const Expanded(
+            child: EmployeesPage(),
           ),
         ],
       ),

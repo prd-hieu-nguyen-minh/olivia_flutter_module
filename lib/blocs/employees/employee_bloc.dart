@@ -1,14 +1,19 @@
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/data/models/candidates/column.dart';
+import 'package:olivia_flutter_module/data/models/employees/employee.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/repositories/employee_repository.dart';
 
 class EmployeeBloc extends BaseBloc with SingleBlocMixin {
   final EmployeeRepository _employeeRepository;
+  final List<Employee> _cachedEmployees;
+  final perPage = 30;
 
-  EmployeeBloc() : _employeeRepository = getIt<EmployeeRepository>();
+  EmployeeBloc()
+      : _employeeRepository = getIt<EmployeeRepository>(),
+        _cachedEmployees = [];
 
   void getNavigation() async {
     single<List<MenuSection>>(
@@ -23,9 +28,12 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
     MenuSection menuSection, {
     String keyword = "",
     int page = 1,
-    int perPage = 30,
-    Column? column,
+    Column? sortColumn,
+    bool isRefresh = true,
   }) {
+    if (isRefresh) {
+      _cachedEmployees.clear();
+    }
     single(
       () => _employeeRepository.getEmployees({
         "employee_type": menuSection.key,
@@ -33,12 +41,16 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
         "keyword": keyword,
         "page": page,
         "per_page": perPage,
-        "sort": column?.sortMap ?? {},
+        "sort": sortColumn?.sortMap ?? {},
       }),
       onSuccess: (data) {
-        data.column = column;
+        _cachedEmployees.addAll(data.employees);
         return GetEmployeesSuccess(
-          response: data,
+          employees: _cachedEmployees,
+          columns: data.getColumns(sortColumn),
+          isHasNext: data.employees.length >= perPage,
+          page: page,
+          sortColumn: sortColumn,
         );
       },
     );
