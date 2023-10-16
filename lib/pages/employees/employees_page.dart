@@ -63,6 +63,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
       content: ScrollConfiguration(
         behavior: DisableScrollGrowBehavior(),
         child: BasePage(
+          backgroundColor: Colors.transparent,
           body: _buildContent(),
           loadingNotifier: _loadingNotifier,
         ),

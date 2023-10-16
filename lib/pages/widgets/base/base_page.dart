@@ -4,6 +4,7 @@ import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart'
 class BasePage extends StatelessWidget {
   final Widget? appBar;
   final Widget body;
+  final Color backgroundColor;
   final ValueNotifier<bool>? loadingNotifier;
 
   const BasePage({
@@ -11,13 +12,14 @@ class BasePage extends StatelessWidget {
     required this.body,
     this.appBar,
     this.loadingNotifier,
+    this.backgroundColor = Colors.white,
   });
 
   @override
   Widget build(BuildContext context) {
     var appBar = this.appBar;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Column(
           children: [

@@ -12,15 +12,13 @@ class IconToolbar extends Toolbar {
   @override
   Widget getWidget() {
     return MainBorder(
-      child: MainBorder(
-        radius: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Icon(
-            icon,
-            color: Colors.black87,
-            size: 24,
-          ),
+      radius: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Icon(
+          icon,
+          color: Colors.black87,
+          size: 24,
         ),
       ),
     );
