@@ -22,7 +22,7 @@ class EmployeeSectionWidget extends StatelessWidget {
         content: Text(
           menuSection.name,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -30,7 +30,7 @@ class EmployeeSectionWidget extends StatelessWidget {
           menuSection.count.toString(),
           style: const TextStyle(
             fontWeight: FontWeight.w400,
-            fontSize: 16,
+            fontSize: 14,
           ),
         ),
         isCurrent: isCurrent,

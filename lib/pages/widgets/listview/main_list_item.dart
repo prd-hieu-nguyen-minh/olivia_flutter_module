@@ -54,7 +54,7 @@ class MainListItem extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontWeight: isTitle ? FontWeight.w700 : FontWeight.w400,
-        fontSize: 16,
+        fontSize: 14,
       ),
     );
   }
