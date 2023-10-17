@@ -4,6 +4,7 @@ import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
+import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/pages/widgets/app_bar/base/base_app_bar.dart';
@@ -24,25 +25,27 @@ class PhoneEmployeeContentPage extends StatefulWidget {
   });
 
   @override
-  State<PhoneEmployeeContentPage> createState() =>
-      _PhoneEmployeeContentPageState();
+  State<PhoneEmployeeContentPage> createState() => _PhoneEmployeeContentPageState();
 }
 
 class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
   late EmployeeBloc _employeeBloc;
   late ValueNotifier<bool> _loadingNotifier;
+  late TextEditingController _searchTextController;
 
   @override
   void initState() {
     _employeeBloc = getIt<EmployeeBloc>();
-    _employeeBloc.getEmployees(widget.menuSection);
     _loadingNotifier = ValueNotifier(true);
+    _searchTextController = TextEditingController();
+    getEmployees();
     super.initState();
   }
 
   @override
   void dispose() {
     _loadingNotifier.dispose();
+    _searchTextController.dispose();
     super.dispose();
   }
 
@@ -117,6 +120,7 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
           const SizedBox(width: 8),
           Expanded(
             child: TextFormField(
+              controller: _searchTextController,
               style: const TextStyle(
                 fontSize: 14,
                 color: AppColors.colorText,
@@ -130,6 +134,9 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
                   color: AppColors.colorDescription,
                 ),
               ),
+              onChanged: (value) {
+                getEmployees();
+              },
             ),
           ),
         ],
@@ -169,23 +176,33 @@ class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {
             ),
             onTitleTap: (column, sortBy) {
               column.sortBy = sortBy;
-              _employeeBloc.getEmployees(
-                widget.menuSection,
+              getEmployees(
                 sortColumn: column,
               );
             },
             onLoadMore: () {
-              _employeeBloc.getEmployees(
-                widget.menuSection,
+              getEmployees(
                 sortColumn: state.sortColumn,
                 page: state.page + 1,
-                isRefresh: false,
               );
             },
           );
         }
         return const SizedBox.shrink();
       },
+    );
+  }
+
+  void getEmployees({
+    cl.Column? sortColumn,
+    int page = 1,
+  }) {
+    _employeeBloc.getEmployees(
+      widget.menuSection,
+      keyword: _searchTextController.text,
+      sortColumn: sortColumn,
+      page: page,
+      isRefresh: page == 1,
     );
   }
 }
