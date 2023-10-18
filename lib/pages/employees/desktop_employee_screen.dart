@@ -13,24 +13,9 @@ class DesktopEmployeeScreen extends StatefulWidget {
 }
 
 class _DesktopEmployeeScreenState extends State<DesktopEmployeeScreen> {
-  late ValueNotifier<bool> loadingNotifier;
-
-  @override
-  void initState() {
-    loadingNotifier = ValueNotifier(false);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    loadingNotifier.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      loadingNotifier: loadingNotifier,
       body: Column(
         children: [
           DesktopHeaderApp(

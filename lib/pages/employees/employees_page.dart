@@ -41,7 +41,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
     _currentMenuNotifier = ValueNotifier(null);
     _searchDeBouncer = DeBouncer();
     _searchTextController = TextEditingController();
-    _loadingNotifier = ValueNotifier(false);
+    _loadingNotifier = ValueNotifier(true);
     super.initState();
   }
 

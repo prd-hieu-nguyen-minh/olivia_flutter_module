@@ -16,8 +16,8 @@ class MainListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 250,
-      height: 60,
+      width: 230,
+      height: 50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
