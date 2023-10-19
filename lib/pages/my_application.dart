@@ -9,7 +9,8 @@ import 'package:olivia_flutter_module/pages/employees/phone_employee_board_page.
 import 'package:olivia_flutter_module/pages/unknowns/unknown_route_page.dart';
 
 class MyApplication extends StatelessWidget {
-  const MyApplication({super.key});
+  final String? router;
+  const MyApplication({super.key, this.router});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class MyApplication extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        body: chooseWidget(PlatformDispatcher.instance.defaultRouteName),
+        body: chooseWidget(router ?? PlatformDispatcher.instance.defaultRouteName),
       ),
     );
   }
@@ -31,7 +32,6 @@ class MyApplication extends StatelessWidget {
         return const CandidateManagementPage();
       case "my_calendar":
         return const MyCalendarPage();
-
       // Employees
       case "desktop_employees_screen":
         return const DesktopEmployeeScreen();
@@ -39,7 +39,6 @@ class MyApplication extends StatelessWidget {
         return const EmployeesPage();
       case "phone_employees":
         return const PhoneEmployeeBoardPage();
-
       default:
         return UnknownRoutePage(
           route: route ?? "unknown",
