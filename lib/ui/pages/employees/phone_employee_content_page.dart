@@ -26,7 +26,8 @@ class PhoneEmployeeContentPage extends StatefulWidget {
   });
 
   @override
-  State<PhoneEmployeeContentPage> createState() => _PhoneEmployeeContentPageState();
+  State<PhoneEmployeeContentPage> createState() =>
+      _PhoneEmployeeContentPageState();
 }
 
 class _PhoneEmployeeContentPageState extends State<PhoneEmployeeContentPage> {

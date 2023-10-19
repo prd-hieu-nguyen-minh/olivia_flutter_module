@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/common/utils/route_builders.dart';
+import 'package:olivia_flutter_module/core/extensions/locale_context_extension.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
 import 'package:olivia_flutter_module/ui/pages/employees/phone_employee_content_page.dart';
@@ -20,7 +21,7 @@ class _PhoneEmployeeBoardPageState extends State<PhoneEmployeeBoardPage> {
   Widget build(BuildContext context) {
     return BasePage(
       appBar: AllAppBar(
-        title: 'Employees',
+        title: context.loc!.employees,
         onAllAppTap: gotoAllApp,
       ),
       body: EmployeeMainBoardWidget(

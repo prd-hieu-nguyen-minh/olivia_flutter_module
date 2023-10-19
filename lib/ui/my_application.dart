@@ -1,13 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:olivia_flutter_module/ui/pages/unknowns/unknown_route_page.dart';
+import 'package:provider/provider.dart';
 
+import '../locale/locale.dart';
 import 'pages/calendars/my_calendar_page.dart';
 import 'pages/candidate_management/candidate_management_page.dart';
 import 'pages/employees/desktop_employee_screen.dart';
 import 'pages/employees/employees_page.dart';
 import 'pages/employees/phone_employee_board_page.dart';
-import 'pages/unknowns/unknown_route_page.dart';
 
 class MyApplication extends StatelessWidget {
   final String? router;
@@ -16,14 +19,22 @@ class MyApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: 'OpenSans',
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        body: chooseWidget(router ?? PlatformDispatcher.instance.defaultRouteName),
+    return ChangeNotifierProvider(
+      create: (context) => LocaleModel(),
+      child: Consumer<LocaleModel>(
+        builder: (context, localeModel, child) => MaterialApp(
+          title: 'Flutter Demo',
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: localeModel.locale,
+          theme: ThemeData(
+            fontFamily: 'OpenSans',
+            primarySwatch: Colors.blue,
+          ),
+          home: Scaffold(
+            body: chooseWidget(router ?? PlatformDispatcher.instance.defaultRouteName),
+          ),
+        ),
       ),
     );
   }
