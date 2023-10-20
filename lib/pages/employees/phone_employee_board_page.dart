@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:olivia_flutter_module/core/common/utils/route_builders.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
 import 'package:olivia_flutter_module/pages/employees/phone_employee_content_page.dart';
@@ -32,10 +33,12 @@ class _PhoneEmployeeBoardPageState extends State<PhoneEmployeeBoardPage> {
   }
 
   void goToContent(MenuSection menuSection) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => PhoneEmployeeContentPage(
-        menuSection: menuSection,
+    Navigator.of(context).push(
+      RouteBuilders.getSlideLeftRightRoute(
+        widget: PhoneEmployeeContentPage(
+          menuSection: menuSection,
+        ),
       ),
-    ));
+    );
   }
 }
