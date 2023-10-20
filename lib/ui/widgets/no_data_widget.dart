@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/pages/widgets/text/description_text.dart';
+import 'package:olivia_flutter_module/ui/widgets/text/description_text.dart';
 
 class NoDataWidget extends StatelessWidget {
   final Widget icon;

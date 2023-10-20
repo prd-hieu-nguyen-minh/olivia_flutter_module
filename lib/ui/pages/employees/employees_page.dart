@@ -11,13 +11,14 @@ import 'package:olivia_flutter_module/data/models/toobar/export_toolbar.dart';
 import 'package:olivia_flutter_module/data/models/toobar/icon_toolbar.dart';
 import 'package:olivia_flutter_module/data/models/toobar/search_toolbar.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
-import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
-import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
-import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
-import 'package:olivia_flutter_module/pages/widgets/no_data_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/toolbar_widget.dart';
+import 'package:olivia_flutter_module/ui/pages/employees/widgets/employee_main_board_widget.dart';
+
+import '../../widgets/base/base_board_main_page.dart';
+import '../../widgets/base/base_page.dart';
+import '../../widgets/disable_scroll_grow_behavior.dart';
+import '../../widgets/listview/main_list_view.dart';
+import '../../widgets/no_data_widget.dart';
+import '../../widgets/toolbar_widget.dart';
 
 class EmployeesPage extends StatefulWidget {
   const EmployeesPage({

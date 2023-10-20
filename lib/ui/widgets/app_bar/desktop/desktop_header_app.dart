@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
 import 'package:olivia_flutter_module/core/resources/app_images.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_border.dart';
-import 'package:olivia_flutter_module/pages/widgets/text/normal_text_16.dart';
+
+import '../../main_border.dart';
+import '../../text/normal_text_16.dart';
 
 class DesktopHeaderApp extends StatelessWidget {
   final void Function()? onAllAppTap;

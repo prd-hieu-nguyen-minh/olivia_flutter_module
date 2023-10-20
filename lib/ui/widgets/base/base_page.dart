@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
+
+import '../main_loading_indicator.dart';
 
 class BasePage extends StatelessWidget {
   final Widget? appBar;

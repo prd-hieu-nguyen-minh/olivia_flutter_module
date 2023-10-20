@@ -7,14 +7,15 @@ import 'package:olivia_flutter_module/core/resources/app_colors.dart';
 import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
-import 'package:olivia_flutter_module/pages/widgets/app_bar/base/base_app_bar.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
-import 'package:olivia_flutter_module/pages/widgets/disable_scroll_grow_behavior.dart';
-import 'package:olivia_flutter_module/pages/widgets/listview/main_list_view.dart';
-import 'package:olivia_flutter_module/pages/widgets/no_data_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/text/description_text.dart';
-import 'package:olivia_flutter_module/pages/widgets/text/normal_text_16.dart';
-import 'package:olivia_flutter_module/pages/widgets/text/title_text.dart';
+
+import '../../widgets/app_bar/base/base_app_bar.dart';
+import '../../widgets/base/base_page.dart';
+import '../../widgets/disable_scroll_grow_behavior.dart';
+import '../../widgets/listview/main_list_view.dart';
+import '../../widgets/no_data_widget.dart';
+import '../../widgets/text/description_text.dart';
+import '../../widgets/text/normal_text_16.dart';
+import '../../widgets/text/title_text.dart';
 
 class PhoneEmployeeContentPage extends StatefulWidget {
   final MenuSection menuSection;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
-import 'package:olivia_flutter_module/pages/my_application.dart';
+import 'package:olivia_flutter_module/ui/my_application.dart';
 
 export 'src/src.dart';
 
