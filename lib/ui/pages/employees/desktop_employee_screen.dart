@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/main.dart';
-import 'package:olivia_flutter_module/pages/employees/employees_page.dart';
-import 'package:olivia_flutter_module/pages/widgets/app_bar/desktop/desktop_header_app.dart';
-import 'package:olivia_flutter_module/pages/widgets/app_bar/desktop/desktop_header_toolbar.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
+
+import '../../widgets/app_bar/desktop/desktop_header_app.dart';
+import '../../widgets/app_bar/desktop/desktop_header_toolbar.dart';
+import '../../widgets/base/base_page.dart';
+import 'employees_page.dart';
 
 class DesktopEmployeeScreen extends StatefulWidget {
   const DesktopEmployeeScreen({super.key});

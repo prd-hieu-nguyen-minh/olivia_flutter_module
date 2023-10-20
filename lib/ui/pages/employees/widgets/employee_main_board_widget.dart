@@ -5,8 +5,9 @@ import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
-import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
+
+import '../../../widgets/main_loading_indicator.dart';
+import 'employee_section_widget.dart';
 
 class EmployeeMainBoardWidget extends StatefulWidget {
   final ValueNotifier<MenuSection?>? notifier;
@@ -19,7 +20,8 @@ class EmployeeMainBoardWidget extends StatefulWidget {
   });
 
   @override
-  State<EmployeeMainBoardWidget> createState() => _EmployeeMainBoardWidgetState();
+  State<EmployeeMainBoardWidget> createState() =>
+      _EmployeeMainBoardWidgetState();
 }
 
 class _EmployeeMainBoardWidgetState extends State<EmployeeMainBoardWidget> {
@@ -53,7 +55,8 @@ class _EmployeeMainBoardWidgetState extends State<EmployeeMainBoardWidget> {
         }
       },
       buildWhen: (previous, current) {
-        return widget.notifier?.value == null || current is GetNavigationEmployeeSuccess;
+        return widget.notifier?.value == null ||
+            current is GetNavigationEmployeeSuccess;
       },
       builder: (context, state) {
         if (state is InProgressState) {

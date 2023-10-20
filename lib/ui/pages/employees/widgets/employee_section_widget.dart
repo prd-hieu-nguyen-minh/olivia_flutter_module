@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
-import 'package:olivia_flutter_module/pages/widgets/section_widget.dart';
+
+import '../../../widgets/section_widget.dart';
 
 class EmployeeSectionWidget extends StatelessWidget {
   final MenuSection menuSection;

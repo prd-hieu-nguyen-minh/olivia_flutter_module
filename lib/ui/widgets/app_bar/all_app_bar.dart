@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:olivia_flutter_module/core/resources/app_images.dart';
-import 'package:olivia_flutter_module/pages/widgets/app_bar/base/base_app_bar.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_border.dart';
-import 'package:olivia_flutter_module/pages/widgets/text/title_text.dart';
+
+import '../main_border.dart';
+import '../text/title_text.dart';
+import 'base/base_app_bar.dart';
 
 class AllAppBar extends StatelessWidget {
   final String title;

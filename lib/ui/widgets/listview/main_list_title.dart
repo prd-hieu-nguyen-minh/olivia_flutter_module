@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
 import 'package:olivia_flutter_module/core/resources/app_images.dart';
-import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
 import 'package:olivia_flutter_module/data/enums/sort_by.dart';
-import 'package:olivia_flutter_module/pages/widgets/listview/main_list_item.dart';
+import 'package:olivia_flutter_module/data/models/candidates/column.dart' as cl;
+
+import 'main_list_item.dart';
 
 class MainListTitle extends StatelessWidget {
   final cl.Column column;

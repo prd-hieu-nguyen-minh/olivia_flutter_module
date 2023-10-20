@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/resources/app_colors.dart';
 import 'package:olivia_flutter_module/data/models/candidates/candidate_response.dart';
-import 'package:olivia_flutter_module/pages/candidate_management/widgets/board_widget.dart';
-import 'package:olivia_flutter_module/pages/candidate_management/widgets/candidate_response_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_board_main_page.dart';
 import 'package:olivia_flutter_module/services/api_services.dart';
+import 'package:olivia_flutter_module/ui/pages/candidate_management/widgets/board_widget.dart';
+import 'package:olivia_flutter_module/ui/pages/candidate_management/widgets/candidate_response_widget.dart';
 
-import '../../src/src.dart';
+import '../../../main.dart';
+import '../../widgets/base/base_board_main_page.dart';
 
 class CandidateManagementPage extends StatefulWidget {
   const CandidateManagementPage({super.key});
