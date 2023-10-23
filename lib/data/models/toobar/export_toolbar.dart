@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/data/models/toobar/toolbar.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_border.dart';
+
+import '../../../ui/widgets/main_border.dart';
 
 class ExportToolbar extends Toolbar {
   @override

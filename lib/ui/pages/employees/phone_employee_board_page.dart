@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/core/common/utils/route_builders.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/main.dart';
-import 'package:olivia_flutter_module/pages/employees/phone_employee_content_page.dart';
-import 'package:olivia_flutter_module/pages/employees/widgets/employee_main_board_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/app_bar/all_app_bar.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_page.dart';
+import 'package:olivia_flutter_module/ui/pages/employees/phone_employee_content_page.dart';
+import 'package:olivia_flutter_module/ui/pages/employees/widgets/employee_main_board_widget.dart';
+
+import '../../widgets/app_bar/all_app_bar.dart';
+import '../../widgets/base/base_page.dart';
 
 class PhoneEmployeeBoardPage extends StatefulWidget {
   const PhoneEmployeeBoardPage({super.key});

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:olivia_flutter_module/data/models/candidates/candidate_response.dart';
-import 'package:olivia_flutter_module/pages/candidate_management/widgets/candidate_toolbar_widget.dart';
+
+import 'candidate_toolbar_widget.dart';
 
 class CandidateResponseWidget extends StatefulWidget {
   final CandidateResponse? response;

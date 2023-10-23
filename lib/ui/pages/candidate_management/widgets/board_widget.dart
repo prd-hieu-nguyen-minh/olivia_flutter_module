@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:olivia_flutter_module/core/helpers/app_helpers.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
-import 'package:olivia_flutter_module/pages/widgets/menu_section_widget.dart';
 import 'package:olivia_flutter_module/services/api_services.dart';
+
+import '../../../widgets/menu_section_widget.dart';
 
 class BoardWidget extends StatefulWidget {
   const BoardWidget({Key? key}) : super(key: key);

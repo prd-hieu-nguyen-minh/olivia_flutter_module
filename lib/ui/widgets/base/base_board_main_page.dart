@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/pages/widgets/base/base_main_page.dart';
+
+import 'base_main_page.dart';
 
 class BaseBoardMainPage extends StatelessWidget {
   final Widget title;

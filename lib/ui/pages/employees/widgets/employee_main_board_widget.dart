@@ -5,8 +5,9 @@ import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_state.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
-import 'package:olivia_flutter_module/pages/employees/widgets/employee_section_widget.dart';
-import 'package:olivia_flutter_module/pages/widgets/main_loading_indicator.dart';
+
+import '../../../widgets/main_loading_indicator.dart';
+import 'employee_section_widget.dart';
 
 class EmployeeMainBoardWidget extends StatefulWidget {
   final ValueNotifier<MenuSection?>? notifier;
