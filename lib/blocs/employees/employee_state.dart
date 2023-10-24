@@ -1,5 +1,6 @@
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/data/models/employees/employee.dart';
+import 'package:olivia_flutter_module/data/models/employees/employee_detail.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 
 import '../../data/models/candidates/column.dart';
@@ -25,5 +26,13 @@ class GetEmployeesSuccess extends BaseState {
     required this.isHasNext,
     required this.page,
     this.sortColumn,
+  });
+}
+
+class GetEmployeeDetailSuccess extends BaseState {
+  final EmployeeDetail employeeDetail;
+
+  GetEmployeeDetailSuccess({
+    required this.employeeDetail,
   });
 }
