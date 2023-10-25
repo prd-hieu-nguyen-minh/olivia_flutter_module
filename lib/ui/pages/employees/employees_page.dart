@@ -16,6 +16,7 @@ import 'package:olivia_flutter_module/data/models/toobar/search_toolbar.dart';
 import 'package:olivia_flutter_module/di/injection.dart';
 import 'package:olivia_flutter_module/ui/pages/employees/widgets/employee_main_board_widget.dart';
 
+import '../../../data/models/toobar/toolbar.dart';
 import '../../widgets/base/base_board_main_page.dart';
 import '../../widgets/base/base_page.dart';
 import '../../widgets/disable_scroll_grow_behavior.dart';
@@ -158,17 +159,20 @@ class _EmployeesPageState extends State<EmployeesPage> {
         ),
         ToolbarWidget(
           toolbars: [
-            IconToolbar(
+            const IconToolbar(
               icon: Icons.filter_list_sharp,
+              toolbarKey: ToolbarType.FILTER,
             ),
-            SearchToolbar(
-              textFormField: _buildSearchTextField(),
-            ),
-            IconToolbar(
+            SearchWidget(textFormField: _buildSearchTextField()),
+            const IconToolbar(
+              toolbarKey: ToolbarType.TABLE_SETTING,
               icon: Icons.dashboard_customize,
             ),
-            ExportToolbar(),
+            const ExportToolbar(
+              toolbarKey: ToolbarType.DOWNLOAD,
+            ),
           ],
+          callBack: (key) {},
         ),
       ],
     );
