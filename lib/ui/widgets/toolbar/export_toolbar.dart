@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/data/models/toobar/toolbar.dart';
+import 'package:olivia_flutter_module/ui/widgets/Toolbar/toolbar_item.dart';
 
-import '../../../ui/widgets/main_border.dart';
+import '../main_border.dart';
 
-class ExportToolbar extends Toolbar {
+class ExportToolbar extends ToolbarItem {
+  const ExportToolbar({
+    super.key,
+    required super.toolbarKey,
+  });
+
   @override
-  Widget getWidget() {
+  Widget build(BuildContext context) {
     return const MainBorder(
       radius: 4,
       child: Padding(

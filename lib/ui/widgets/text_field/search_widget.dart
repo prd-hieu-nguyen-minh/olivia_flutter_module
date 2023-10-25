@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/data/models/toobar/toolbar.dart';
 
-class SearchToolbar extends Toolbar {
+class SearchWidget extends StatelessWidget {
   final TextFormField textFormField;
 
-  SearchToolbar({
+  const SearchWidget({
+    super.key,
     required this.textFormField,
   });
 
   @override
-  Widget getWidget() {
+  Widget build(BuildContext context) {
     return Container(
       height: 42,
       width: 200,
