@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:olivia_flutter_module/ui/pages/unknowns/unknown_route_page.dart';
 import 'package:provider/provider.dart';
-
+import 'package:olivia_flutter_module/ui/pages/employees/employee_detail_page.dart';
 import '../locale/locale.dart';
 import 'pages/calendars/my_calendar_page.dart';
 import 'pages/candidate_management/candidate_management_page.dart';
@@ -52,6 +52,8 @@ class MyApplication extends StatelessWidget {
         return const EmployeesPage();
       case "phone_employees":
         return const PhoneEmployeeBoardPage();
+      case "employee_detail_page":
+        return const EmployeeDetailPage();
       default:
         return UnknownRoutePage(
           route: route ?? "unknown",

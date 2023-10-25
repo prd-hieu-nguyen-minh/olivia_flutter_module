@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:olivia_flutter_module/blocs/blocs.dart';
 import 'package:olivia_flutter_module/blocs/employees/employee_bloc.dart';
@@ -35,6 +38,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
   late DeBouncer _searchDeBouncer;
   late TextEditingController _searchTextController;
   late ValueNotifier<bool> _loadingNotifier;
+  late MethodChannel _employeeChannel;
 
   @override
   void initState() {
@@ -43,6 +47,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
     _searchDeBouncer = DeBouncer();
     _searchTextController = TextEditingController();
     _loadingNotifier = ValueNotifier(true);
+    _employeeChannel = const MethodChannel("employees.channel");
     super.initState();
   }
 
@@ -51,6 +56,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
     _currentMenuNotifier.dispose();
     _searchTextController.dispose();
     _loadingNotifier.dispose();
+    _employeeChannel.setMethodCallHandler(null);
     super.dispose();
   }
 
@@ -229,6 +235,11 @@ class _EmployeesPageState extends State<EmployeesPage> {
                 page: state.page + 1,
               );
             },
+            onItemTap: (record, index) => showEmployeeDetail(
+              record: record,
+              index: index,
+              column: state.sortColumn,
+            ),
           );
         }
         return const SizedBox.shrink();
@@ -251,5 +262,21 @@ class _EmployeesPageState extends State<EmployeesPage> {
       page: page,
       isRefresh: page == 1,
     );
+  }
+
+  void showEmployeeDetail({
+    required Map<String, dynamic> record,
+    required int index,
+    cl.Column? column,
+  }) async {
+    var args = {
+      "employee_id": record["id"],
+      "current_offset": index + 1,
+      "filter": {
+        "keyword": _searchTextController.text,
+        "sort": column?.sortMap,
+      },
+    };
+    await _employeeChannel.invokeMethod("employee.show_employee_detail", jsonEncode(args));
   }
 }

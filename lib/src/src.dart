@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 class SampleCallNativeFlutter {
   static const MethodChannel _channel = MethodChannel('common_channel');
@@ -13,9 +11,11 @@ class SampleCallNativeFlutter {
     return version;
   }
 
-  static Future<Map<dynamic, dynamic>?> get headers async {
-    final headers = await _channel.invokeMethod('headers');
-    return headers;
+  static Future<Map<String, String>?> get headers async {
+    final headers = (await _channel.invokeMethod('headers')) as Map?;
+    return headers?.map(
+      (key, value) => MapEntry(key.toString(), value.toString()),
+    );
   }
 
   static Future<String?> get apiUrl async {
@@ -34,5 +34,9 @@ class SampleCallNativeFlutter {
 
   static Future showMenuMore(String menuJson) async {
     await _menuChannel.invokeMethod('show_more', menuJson);
+  }
+
+  static Future<String?> getFirstCharString(String name) async {
+    return await _channel.invokeMethod("get_first_char_string", name);
   }
 }

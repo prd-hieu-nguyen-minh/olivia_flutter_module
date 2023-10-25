@@ -10,4 +10,8 @@ class AppColors {
   static const colorDescription = Color(0xFFA9A9A9);
 
   static const colorWhite = Colors.white;
+
+  static const colorBgInfo = Color(0xFF395E66);
+
+  static const colorBgAvatar = Color(0xFF3BCEAC);
 }

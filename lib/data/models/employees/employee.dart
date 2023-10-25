@@ -1,4 +1,5 @@
 class Employee {
+  final dynamic id;
   final dynamic name;
   final dynamic jobTitle;
   final dynamic department;
@@ -15,6 +16,7 @@ class Employee {
   final dynamic preferredLanguage;
 
   Employee({
+    this.id,
     this.name,
     this.jobTitle,
     this.department,
@@ -33,6 +35,7 @@ class Employee {
 
   factory Employee.fromJson(Map? json) {
     return Employee(
+      id: json?["id"],
       name: json?["name"],
       jobTitle: json?["position_title"],
       department: json?[""],
@@ -49,6 +52,7 @@ class Employee {
   }
 
   Map<String, dynamic> get map => {
+        "id": id,
         "name": name,
         "position_title": jobTitle,
         "user_role": userRole,
