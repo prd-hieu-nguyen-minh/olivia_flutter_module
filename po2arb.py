@@ -31,12 +31,12 @@ def extract_from_po_file(lang, po_path):
             msgid = redefine_msgid(line.msgid)
             msgid_plural = redefine_msgid(line.msgid_plural)
             if not line.msgid_plural:
-                if lang == "en" or lang == "en_GB":
+                if lang == "en_GB":
                     hasp_map_msg_ids[msgid] = line.msgid
                 else:
                     hasp_map_msg_ids[msgid] = line.msgstr
             else:
-                if lang == "en" or lang == "en_GB":
+                if lang == "en_GB":
                     hasp_map_msg_ids[msgid] = line.msgid_plural
                 else:
                     hasp_map_msg_ids[msgid] = line.msgstr_plural[0]
@@ -103,12 +103,12 @@ def po2arb(locales, pofiles, locale_dir):
                     data_export[key] = add_number_param(msgstr)
         # Export file .arb from dump data PO
         with open("lib/l10n/intl_" + rename_lang + ".arb", "w+") as file:
-            json.dump(data_export, file)
+            json.dump(data_export, file, indent = 4)
 
 
 if __name__ == '__main__':
     # locales = ["en"]
-    locales = ["bg", "bs", "cs", "da", "de", "el", "en", "en_GB", "es", "es_EM", "es_MX", "fr", "fr_CA", "he", "hr", "hu", "it",
+    locales = ["bg", "bs", "cs", "da", "de", "el", "en_GB", "es", "es_EM", "es_MX", "fr", "fr_CA", "he", "hr", "hu", "it",
                "ja", "ko", "nl", "pl", "pt", "pt_BR", "ro", "ru", "sk", "sr", "th", "tr", "uk", "vi", "zh_CN", "zh_TW"]
     po_files = ["mobile", "django", "djangojs"]
     locale_dir = "locale"
