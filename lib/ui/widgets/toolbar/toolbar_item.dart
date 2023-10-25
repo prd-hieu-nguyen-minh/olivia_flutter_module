@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-abstract class Toolbar {
-  Widget getWidget();
-}
-
 abstract class ToolbarItem extends StatelessWidget {
   final dynamic toolbarKey;
   const ToolbarItem({
