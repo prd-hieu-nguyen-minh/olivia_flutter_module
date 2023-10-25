@@ -14,6 +14,7 @@ class MainListView extends StatefulWidget {
   final bool isHasNext;
   final void Function()? onLoadMore;
   final void Function(cl.Column column, SortBy? sortBy)? onTitleTap;
+  final void Function(Map<String, dynamic> record, int index)? onItemTap;
 
   const MainListView({
     Key? key,
@@ -24,6 +25,7 @@ class MainListView extends StatefulWidget {
     this.isHasNext = false,
     this.onLoadMore,
     required this.noDataWidget,
+    this.onItemTap,
   }) : super(key: key);
 
   @override
@@ -78,14 +80,15 @@ class _MainListViewState extends State<MainListView> {
                         widget.onLoadMore?.call();
                         return const SizedBox(height: 2);
                       }
+                      final record = widget.records[index];
                       return _buildRecordRow(
                         columns: widget.columns,
                         pingCount: widget.pingCount,
                         index: index,
                         builder: (column) => MainListItem(
-                          text: widget.records[index][column.id]?.toString() ??
-                              "",
+                          text: record[column.id]?.toString() ?? "",
                         ),
+                        onTap: () => widget.onItemTap?.call(record, index),
                       );
                     },
                   ),
@@ -105,32 +108,32 @@ class _MainListViewState extends State<MainListView> {
     required int pingCount,
     required int index,
     required Widget Function(cl.Column column) builder,
+    void Function()? onTap,
   }) {
-    var horScrollController =
-        _childScrollControllerMap[index] ?? ScrollController();
+    var horScrollController = _childScrollControllerMap[index] ?? ScrollController();
     _childScrollControllerMap.putIfAbsent(index, () => horScrollController);
     horScrollController.addListener(() {
       getHorScrollListener(horScrollController);
     });
-    return Row(
-      children: [
-        Row(
-          children:
-              columns.sublist(0, pingCount).map((e) => builder(e)).toList(),
-        ),
-        Flexible(
-          child: SingleChildScrollView(
-            controller: horScrollController,
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: columns
-                  .sublist(pingCount, columns.length)
-                  .map((e) => builder(e))
-                  .toList(),
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Row(
+            children: columns.sublist(0, pingCount).map((e) => builder(e)).toList(),
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              controller: horScrollController,
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children:
+                    columns.sublist(pingCount, columns.length).map((e) => builder(e)).toList(),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

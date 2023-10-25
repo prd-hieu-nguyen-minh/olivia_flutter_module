@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:olivia_flutter_module/data/models/employees/employee_detail.dart';
 import 'package:olivia_flutter_module/data/models/employees/employee_response.dart';
 import 'package:olivia_flutter_module/data/models/menu_section.dart';
 import 'package:olivia_flutter_module/data/sources/remote/service/dio_client.dart';
@@ -11,6 +12,8 @@ abstract class EmployeeRemoteDataSource {
   Future<List<MenuSection>> getNavigation();
 
   Future<EmployeeResponse> getEmployees(Map<String, dynamic> params);
+
+  Future<EmployeeDetail> getEmployeeDetail(Map<String, dynamic> params);
 }
 
 class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
@@ -20,9 +23,7 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
 
   @override
   Future<List<MenuSection>> getNavigation() async {
-    final headers = (await SampleCallNativeFlutter.headers)?.map(
-      (key, value) => MapEntry(key.toString(), value.toString()),
-    );
+    final headers = await SampleCallNativeFlutter.headers;
     final response = await _dioService.get(
       '$EMPLOYEE_SETTING_URL/navigation',
       options: Options(
@@ -36,9 +37,7 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
 
   @override
   Future<EmployeeResponse> getEmployees(Map<String, dynamic> params) async {
-    final headers = (await SampleCallNativeFlutter.headers)?.map(
-      (key, value) => MapEntry(key.toString(), value.toString()),
-    );
+    final headers = await SampleCallNativeFlutter.headers;
     final response = await _dioService.post(
       '$EMPLOYEE_SETTING_URL/search',
       data: params,
@@ -47,5 +46,18 @@ class EmployeeRemoteDataSourceImpl implements EmployeeRemoteDataSource {
       ),
     );
     return EmployeeResponse.fromJson(response?["data"]);
+  }
+
+  @override
+  Future<EmployeeDetail> getEmployeeDetail(Map<String, dynamic> params) async {
+    final headers = await SampleCallNativeFlutter.headers;
+    final response = await _dioService.post(
+      '$EMPLOYEE_SETTING_URL/get-detail',
+      data: params,
+      options: Options(
+        headers: headers,
+      ),
+    );
+    return EmployeeDetail.fromJson(response);
   }
 }

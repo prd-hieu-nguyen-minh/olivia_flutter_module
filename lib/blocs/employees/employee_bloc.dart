@@ -55,4 +55,23 @@ class EmployeeBloc extends BaseBloc with SingleBlocMixin {
       },
     );
   }
+
+  void getEmployeeDetail({
+    required employeeId,
+    required keyword,
+    required sort,
+  }) {
+    single(
+      () => _employeeRepository.getEmployeeDetail({
+        "employee_id": employeeId,
+        "filter_data": {
+          "employees": employeeId,
+        },
+        "keyword": keyword ?? "",
+        "sort": sort ?? {},
+        "only_count": 0,
+      }),
+      onSuccess: (data) => GetEmployeeDetailSuccess(employeeDetail: data),
+    );
+  }
 }
