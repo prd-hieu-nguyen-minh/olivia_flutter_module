@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/ui/widgets/Toolbar/toolbar_item.dart';
+import 'package:olivia_flutter_module/ui/widgets/toolbar/toolbar_item.dart';
 
 class ToolbarWidget extends StatelessWidget {
   final List<Widget> toolbars;
@@ -19,7 +19,7 @@ class ToolbarWidget extends StatelessWidget {
       if (toolbar is ToolbarItem) {
         widgets.add(InkWell(
           onTap: () {
-            onTap?.call(toolbar?.toolbarKey);
+            onTap?.call(toolbar.toolbarKey);
           },
           child: toolbar,
         ));

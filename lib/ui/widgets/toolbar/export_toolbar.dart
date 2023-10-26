@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:olivia_flutter_module/ui/widgets/Toolbar/toolbar_item.dart';
+import 'package:olivia_flutter_module/ui/widgets/toolbar/toolbar_item.dart';
 
 import '../main_border.dart';
 

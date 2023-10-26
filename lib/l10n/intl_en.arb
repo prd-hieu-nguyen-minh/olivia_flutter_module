@@ -1,1 +1,6 @@
-{"employees": "Employees", "upload_employeeterm_file": "Upload {param1} File"}
+{
+    "employees": "Employees",
+    "upload_employeeterm_file": "Upload {param1} File",
+    "about": "About",
+    "documents": "Documents"
+}

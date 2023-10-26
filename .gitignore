@@ -50,3 +50,4 @@ app.*.symbols
 app.*.map.json
 /locale/
 /lib/generated/
+pubspec.lock

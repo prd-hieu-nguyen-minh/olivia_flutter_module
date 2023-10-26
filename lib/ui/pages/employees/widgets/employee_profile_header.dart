@@ -26,45 +26,36 @@ class EmployeeProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            children: [
-              InkWell(
-                onTap: onClose,
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: AppColors.colorDescription,
-                  size: 26,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const TitleText("Employee Profile"),
-              const Spacer(),
-              NormalText14("$position of $count"),
-              const SizedBox(width: 8),
-              _buildIcon(
-                Icons.keyboard_arrow_left,
-                isEnable: !isFirst,
-                onTap: () => onNext?.call(position - 1),
-              ),
-              _buildIcon(
-                Icons.keyboard_arrow_right,
-                isEnable: !isLast,
-                onTap: () => onNext?.call(position + 1),
-              ),
-            ],
+    return Container(
+      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: onClose,
+            child: const Icon(
+              Icons.arrow_back,
+              color: AppColors.colorDescription,
+              size: 26,
+            ),
           ),
-        ),
-        const Divider(
-          color: AppColors.colorLineBar,
-          height: 1,
-          thickness: 1,
-        ),
-      ],
+          const SizedBox(width: 12),
+          const TitleText("Employee Profile"),
+          const Spacer(),
+          NormalText14("$position of $count"),
+          const SizedBox(width: 8),
+          _buildIcon(
+            Icons.keyboard_arrow_left,
+            isEnable: !isFirst,
+            onTap: () => onPrevious?.call(position - 1),
+          ),
+          _buildIcon(
+            Icons.keyboard_arrow_right,
+            isEnable: !isLast,
+            onTap: () => onNext?.call(position + 1),
+          ),
+        ],
+      ),
     );
   }
 

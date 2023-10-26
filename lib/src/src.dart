@@ -39,4 +39,8 @@ class SampleCallNativeFlutter {
   static Future<String?> getFirstCharString(String name) async {
     return await _channel.invokeMethod("get_first_char_string", name);
   }
+
+  static Future showDialogFromNative(Map params) {
+    return _channel.invokeMethod("show_dialog_from_native", params);
+  }
 }

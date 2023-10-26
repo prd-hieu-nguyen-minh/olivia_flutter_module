@@ -14,4 +14,6 @@ class AppColors {
   static const colorBgInfo = Color(0xFF395E66);
 
   static const colorBgAvatar = Color(0xFF3BCEAC);
+
+  static const colorBgMainContent = Color(0xFFF8F8F8);
 }
