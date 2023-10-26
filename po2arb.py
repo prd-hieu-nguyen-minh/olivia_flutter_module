@@ -103,7 +103,7 @@ def po2arb(locales, pofiles, locale_dir):
                     data_export[key] = add_number_param(msgstr)
         # Export file .arb from dump data PO
         with open("lib/l10n/intl_" + rename_lang + ".arb", "w+") as file:
-            json.dump(data_export, file, indent = 4)
+            json.dump(data_export, file, ensure_ascii=False, indent=4)
 
 
 if __name__ == '__main__':

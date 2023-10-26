@@ -57,4 +57,4 @@ while True:
 
     # Read text to arb file
     with open(path_file, "w+") as json_file:
-        json.dump(json_lang, json_file)
+        json.dump(json_lang, json_file, ensure_ascii=False, indent=4)
